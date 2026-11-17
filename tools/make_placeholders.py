@@ -232,6 +232,24 @@ CHARS = {
                  hook=True),
     "goldenfreddy": dict(fur=(185, 145, 40), belly=(215, 185, 110), eye=(255, 255, 255), ears="round", hat=True,
                          tie=(25, 25, 60), hollow=True),
+    # ---- Chapter 2: Toys (shiny plastic, rosy cheeks)
+    "toyfreddy": dict(fur=(150, 85, 40), belly=(225, 175, 110), eye=(110, 160, 255), ears="round", hat=True,
+                      tie=(20, 20, 20), toy=True),
+    "toybonnie": dict(fur=(80, 150, 230), belly=(235, 240, 255), eye=(60, 200, 90), ears="long", tie=(200, 30, 40),
+                      toy=True),
+    "toychica": dict(fur=(250, 210, 40), belly=(255, 235, 170), eye=(80, 150, 255), ears="feather", beak=True,
+                     bib=True, toy=True),
+    "mangle": dict(fur=(238, 238, 238), belly=(240, 140, 190), eye=(255, 220, 80), ears="pointed", tie=(200, 30, 60),
+                   toy=True, mangle=True),
+    # ---- Chapter 2: Withereds (the Chapter 1 crew, decayed further)
+    "witheredfreddy": dict(fur=(90, 54, 30), belly=(140, 100, 60), eye=(120, 170, 255), ears="round", hat=True,
+                           tie=(20, 20, 20), withered=True),
+    "witheredbonnie": dict(fur=(64, 56, 120), belly=(120, 112, 160), eye=(255, 40, 40), ears="long",
+                           tie=(140, 20, 30), withered=True, faceless=True),
+    "witheredchica": dict(fur=(180, 148, 36), belly=(200, 180, 120), eye=(200, 60, 160), ears="feather", beak=True,
+                          bib=True, withered=True),
+    "witheredfoxy": dict(fur=(120, 34, 26), belly=(170, 140, 110), eye=(255, 220, 80), ears="pointed", patch=True,
+                         hook=True, withered=True),
 }
 
 ENDO = (95, 95, 100)
@@ -323,6 +341,10 @@ def draw_char(key, stage):
         h.polygon([(hx - 110, hy + 30), (hx + 110, hy + 30), (hx, hy + 160)], fill=(240, 130, 30))
     else:
         h.ellipse([hx - 30, hy - 10, hx + 30, hy + 30], fill=(25, 15, 15))
+    if c.get("toy"):
+        for sgn in (-1, 1):
+            h.ellipse([hx + sgn * 130 - 26, hy + 30, hx + sgn * 130 + 26, hy + 70], fill=(240, 110, 130))
+        h.ellipse([hx - 120, hy - 150, hx - 40, hy - 110], fill=(255, 255, 255, 90))
     # jaw / teeth
     jaw_open = 0 if stage == 3 else 40
     h.rectangle([hx - 90, hy + 100 + jaw_open, hx + 90, hy + 150 + jaw_open], fill=fur)
@@ -351,6 +373,15 @@ def draw_char(key, stage):
         h.ellipse([ex - 10, hy - 50, ex + 10, hy - 30], fill=(10, 10, 10))
     if c.get("tie"):
         pass
+    if c.get("faceless") and stage < 3:
+        # Withered Bonnie: no face, just endoskeleton
+        h.ellipse([hx - 170, hy - 110, hx + 170, hy + 160], fill=(12, 12, 14))
+        for sgn in (-1, 1):
+            h.ellipse([hx + sgn * 60 - 22, hy - 60, hx + sgn * 60 + 22, hy - 16], fill=(70, 70, 75))
+            h.ellipse([hx + sgn * 60 - 8, hy - 46, hx + sgn * 60 + 8, hy - 30], fill=c["eye"])
+        for k in range(-3, 4):
+            h.rectangle([hx + k * 22 - 8, hy + 90, hx + k * 22 + 8, hy + 112], fill=(200, 200, 190))
+        h.rectangle([hx - 80, hy + 112, hx + 80, hy + 124], fill=ENDO)
     head = head.rotate(tilt, center=(hx, hy), resample=Image.BICUBIC)
     im.alpha_composite(head, (0, 0))
     d = ImageDraw.Draw(im)
@@ -367,6 +398,21 @@ def draw_char(key, stage):
         base.alpha_composite(glow)
         base.alpha_composite(im)
         im = base
+    if c.get("withered") and stage < 3:
+        d = ImageDraw.Draw(im)
+        for (x0, y0, r) in [(cx - 120, 640, 40), (cx + 90, 470, 30), (cx - 40, 760, 26), (cx + 150, 700, 34)]:
+            d.ellipse([x0 - r, y0 - r, x0 + r, y0 + r], fill=(20, 16, 14))
+            d.line([(x0 - r + 8, y0), (x0 + r - 8, y0 + 6)], fill=ENDO, width=6)
+    if c.get("mangle") and stage < 3:
+        d = ImageDraw.Draw(im)
+        random.seed(7 + stage)
+        for _ in range(14 - stage * 4):
+            pts = [(random.randint(80, CW - 80), random.randint(300, CH - 40)) for _ in range(3)]
+            d.line(pts, fill=random.choice([ENDO, ENDO_D, (220, 220, 220), (240, 140, 190)]), width=12, joint="curve")
+        # second endo head
+        d.ellipse([cx + 160, 860 - stage * 60, cx + 300, 980 - stage * 60], fill=ENDO_D)
+        d.ellipse([cx + 190, 890 - stage * 60, cx + 220, 920 - stage * 60], fill=(255, 220, 80))
+        d.ellipse([cx + 240, 890 - stage * 60, cx + 270, 920 - stage * 60], fill=(10, 10, 10))
     if c.get("hollow") and stage < 3:
         d = ImageDraw.Draw(im)
         for (x0, y0, x1, y1) in [(cx - 150, 450, cx - 60, 560), (cx - 120, 600, cx - 20, 700), (cx + 60, 120, cx + 140, 220)]:
@@ -376,6 +422,120 @@ def draw_char(key, stage):
             d.line([(x, 430 + (k % 3) * 40), (x + 30, 470 + (k % 2) * 50), (x + 10, 520)], fill=(60, 45, 15), width=4)
     names = ["broken", "arms", "legs", "fixed"]
     im.save(os.path.join(IMG, "chars", f"{key}_{names[stage]}.png"))
+
+
+def draw_puppet():
+    im = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    cx = CW // 2
+    # long thin limbs
+    for sgn in (-1, 1):
+        d.line([(cx + sgn * 70, 440), (cx + sgn * 230, 640), (cx + sgn * 260, 860)], fill=(12, 12, 14), width=34, joint="curve")
+        d.line([(cx + sgn * 40, 760), (cx + sgn * 60, 1050)], fill=(12, 12, 14), width=40)
+        for k in range(3):
+            d.rectangle([cx + sgn * (226 + 0) - 18, 600 + k * 120, cx + sgn * 226 + 18, 616 + k * 120], fill=(235, 235, 235))
+            d.rectangle([cx + sgn * 50 - 22, 860 + k * 60, cx + sgn * 50 + 22, 874 + k * 60], fill=(235, 235, 235))
+    d.rounded_rectangle([cx - 90, 400, cx + 90, 800], 60, fill=(12, 12, 14))
+    for k in range(3):
+        d.ellipse([cx - 16, 470 + k * 80, cx + 16, 502 + k * 80], fill=(235, 235, 235))
+    # mask
+    d.ellipse([cx - 120, 120, cx + 120, 420], fill=(240, 240, 240))
+    for sgn in (-1, 1):
+        d.ellipse([cx + sgn * 50 - 30, 210, cx + sgn * 50 + 30, 270], fill=(5, 5, 5))
+        d.ellipse([cx + sgn * 50 - 6, 232, cx + sgn * 50 + 6, 244], fill=(255, 255, 255))
+        d.line([(cx + sgn * 50, 270), (cx + sgn * 52, 330)], fill=(140, 40, 200), width=10)
+        d.ellipse([cx + sgn * 80 - 30, 290, cx + sgn * 80 + 30, 340], fill=(220, 30, 50))
+    d.arc([cx - 60, 300, cx + 60, 390], 20, 160, fill=(220, 30, 50), width=12)
+    for st in ("broken", "arms", "legs", "fixed"):
+        im.save(os.path.join(IMG, "chars", f"puppet_{st}.png"))
+
+
+def draw_musicbox(stage):
+    """stage 0 broken, 1 crank fixed, 2 comb/spring fixed, 3 fully repaired"""
+    im = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    cx = CW // 2
+    gold = (200, 160, 60) if stage == 3 else (120, 96, 44)
+    d.rectangle([cx - 260, 560, cx + 260, 960], fill=(70, 30, 70) if stage == 3 else (40, 22, 40))
+    d.rectangle([cx - 280, 520, cx + 280, 580], fill=gold)
+    for k in range(4):
+        d.rectangle([cx - 260 + k * 150, 560, cx - 230 + k * 150, 960], fill=(150, 30, 60))
+    if stage < 3:
+        d.polygon([(cx - 100, 560), (cx + 40, 640), (cx - 60, 760), (cx - 160, 680)], fill=(15, 10, 15))
+    if stage >= 2:
+        for k in range(12):
+            d.rectangle([cx - 120 + k * 20, 500, cx - 110 + k * 20, 520 - (k % 4) * 6], fill=(220, 220, 220))
+    else:
+        d.line([(cx - 120, 510), (cx + 40, 470)], fill=(160, 160, 160), width=6)
+    # crank
+    if stage >= 1:
+        d.rectangle([cx + 280, 720, cx + 360, 740], fill=gold)
+        d.rectangle([cx + 340, 660, cx + 360, 740], fill=gold)
+        d.ellipse([cx + 326, 630, cx + 374, 678], fill=(240, 240, 240))
+    else:
+        d.line([(cx + 380, 960), (cx + 450, 1000)], fill=gold, width=18)
+    if stage == 3:
+        glow = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
+        ImageDraw.Draw(glow).ellipse([100, 400, CW - 100, CH], fill=(200, 160, 255, 50))
+        glow = glow.filter(ImageFilter.GaussianBlur(60))
+        glow.alpha_composite(im)
+        im = glow
+    names = ["broken", "arms", "legs", "fixed"]
+    im.save(os.path.join(IMG, "chars", f"musicbox_{names[stage]}.png"))
+
+
+def bg_partyroom():
+    im = gradient((28, 20, 40), (10, 8, 14))
+    d = ImageDraw.Draw(im)
+    checker_floor(d, 640, (40, 36, 50), (12, 10, 16))
+    for x in range(60, W, 160):
+        d.polygon([(x, 0), (x + 80, 0), (x + 40, 120)], fill=[(200, 60, 90), (60, 140, 220), (240, 200, 60)][(x // 160) % 3])
+    for x in (360, 1560):
+        d.rectangle([x - 240, 700, x + 240, 750], fill=(80, 80, 96))
+    d.text((960, 220), "PARTY ROOM 3", font=font(48, True), fill=(90, 80, 120), anchor="mm")
+    finish(im, "partyroom")
+
+
+def bg_prize():
+    im = gradient((18, 10, 24), (4, 2, 6))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 840, W, H], fill=(20, 14, 20))
+    d.rectangle([520, 200, 1400, 300], fill=(40, 16, 50))
+    d.text((960, 250), "PRIZE CORNER", font=font(56, True), fill=(220, 180, 60), anchor="mm")
+    d.rectangle([760, 560, 1160, 860], fill=(60, 20, 60))
+    d.rectangle([940, 560, 980, 860], fill=(200, 160, 60))
+    d.rectangle([760, 690, 1160, 730], fill=(200, 160, 60))
+    for x in (200, 360, 1560, 1720):
+        d.rectangle([x - 60, 520, x + 60, 840], fill=(36, 30, 40))
+        d.ellipse([x - 40, 440, x + 40, 520], fill=(140, 40, 60))
+    finish(im, "prize")
+
+
+def bg_office2():
+    im = gradient((14, 16, 22), (6, 6, 8))
+    d = ImageDraw.Draw(im)
+    d.rectangle([700, 160, 1220, 760], fill=(3, 3, 5))  # long hallway
+    d.polygon([(700, 160), (860, 360), (860, 560), (700, 760)], fill=(16, 16, 20))
+    d.polygon([(1220, 160), (1060, 360), (1060, 560), (1220, 760)], fill=(16, 16, 20))
+    for x0 in (120, 1560):
+        d.rectangle([x0, 400, x0 + 240, 680], fill=(4, 4, 6))
+    d.rectangle([300, 760, 1620, H], fill=(34, 34, 40))
+    d.rectangle([420, 640, 640, 760], fill=(30, 30, 34))
+    d.rectangle([440, 660, 620, 740], fill=(10, 30, 50))
+    d.text((960, 880), "TOY BOX  •  FREDDY MASK  •  FLASHLIGHT", font=font(28), fill=(70, 70, 80), anchor="mm")
+    finish(im, "office2")
+
+
+def bg_kidscove():
+    im = gradient((26, 12, 26), (8, 4, 8))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 820, W, H], fill=(30, 18, 26))
+    for i in range(40):
+        x, y = random.randint(0, W), random.randint(840, H)
+        d.rectangle([x, y, x + 40, y + 20], fill=random.choice([(200, 60, 90), (60, 140, 220), (240, 200, 60)]))
+    d.text((960, 220), "KID'S COVE", font=font(60, True), fill=(220, 120, 180), anchor="mm")
+    d.text((960, 300), "please don't take apart the entertainment", font=font(26), fill=(120, 80, 100), anchor="mm")
+    finish(im, "kidscove")
 
 
 # ---------------------------------------------------------------------- audio
@@ -437,10 +597,27 @@ def audio():
     write_wav("chime.wav", s)
 
 
+def musicbox_tune():
+    # "My Grandfather's Clock"-ish public domain feel, simple plucked notes
+    notes = [392, 523, 494, 523, 587, 523, 587, 659, 587, 523, 494, 440, 392, 0, 392, 523, 494, 523, 587, 523, 494, 440, 392]
+    s = []
+    for f in notes:
+        for i in range(int(RATE * 0.32)):
+            t = i / RATE
+            v = (math.sin(2 * math.pi * f * t) + 0.3 * math.sin(4 * math.pi * f * t)) * math.exp(-t * 6) * 0.45 if f else 0
+            s.append(v)
+    write_wav("musicbox.wav", s)
+
+
 if __name__ == "__main__":
     bg_exterior(); bg_office(); bg_dining(); bg_stage(); bg_cove(); bg_kitchen(); bg_parts(); bg_menu()
+    bg_partyroom(); bg_prize(); bg_office2(); bg_kidscove()
+    draw_puppet()
+    for st in range(4):
+        draw_musicbox(st)
     for k in CHARS:
         for st in range(4):
             draw_char(k, st)
     audio()
+    musicbox_tune()
     print("placeholders written")

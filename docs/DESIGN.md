@@ -29,10 +29,16 @@ Every repair night has **3 skill checks**:
 - Night 5: **Golden Freddy**. He's the most broken, so his checks are harder (2 hits on arms and legs, 4 hits on full repair, faster needle, smaller zones).
 - Ending: trust ≥ 10 → "The Last Show", otherwise "Closing Time". Both **unlock Chapter 2**.
 
-### Chapter 2 — The New Location (FNAF 2) — PLANNED
-- **Every Toy and every Withered animatronic gets its own repair night**, so Chapter 2 is longer than Chapter 1.
-- Repair mechanic continues.
-- Ends with **the Puppet**, who sends the player to Chapter 3.
+### Chapter 2 — The New Location (FNAF 2) — BUILT
+- Roster: **Toy Freddy, Toy Bonnie, Toy Chica, Mangle** and **Withered Freddy, Bonnie, Chica, Foxy**. No Balloon Boy, JJ, or Golden Freddy (he was the Chapter 1 finale).
+- The player first picks a group (Toys or Withered), then repairs everyone in it, one per night, in any order. The other group only opens after the first group is finished.
+- **Mangle is harder** (2 hits on arms and legs, 4 hits on full repair, faster needle).
+- Finale: **the Puppet**. The player repairs her **music box**, not her. Hold to keep it wound while the meter drains faster and faster. If it runs out, the Puppet rises and you die. Order: wind, then CRANK, then wind, then COMB & SPRING, then wind, then FULL REPAIR (a harder check).
+- Ending: trust ≥ 16 gives "The Gift", otherwise "The Quiet". Both **unlock Chapter 3**. The Puppet sends the player 30 years ahead.
+
+### Carry-over and memory
+- **Good endings make the next chapter easier**: a Chapter 1 good ending gives easier Chapter 2 checks, and a Chapter 2 good ending gives easier Chapter 3 checks (needle ×0.88 speed, wider zones).
+- **Only the finale characters remember earlier chapters** (the Puppet and Springtrap). Everyone else meets the player fresh.
 
 ### Chapter 3 — Fazbear's Fright (FNAF 3) — PLANNED
 - Most animatronics are **hallucinations (phantoms)**.

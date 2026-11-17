@@ -10,7 +10,7 @@
 init python:
     CHAPTERS = [
         {"num": 1, "title": "Freddy Fazbear's Pizza", "sub": "The first location", "label": "start"},
-        {"num": 2, "title": "The New Location", "sub": "Toys, withered, and the Puppet", "label": "chapter2_start"},
+        {"num": 2, "title": "The New Location", "sub": "Toys, Withereds, and the Puppet's music box", "label": "chapter2_start"},
         {"num": 3, "title": "Fazbear's Fright", "sub": "Not everything here is real", "label": "chapter3_start"},
     ]
 
@@ -44,28 +44,15 @@ screen chapter_select():
                         text (c["sub"] if unlocked else "Locked — finish the previous chapter") size 26 color ("#c8102e" if unlocked else "#444")
 
 
-label chapter2_start:
-    $ reset_chapter_state(2)
-    scene black
-    with dissolve
-    show text "{size=90}{b}CHAPTER 2{/b}{/size}\n{size=40}The New Location{/size}" at truecenter
-    with dissolve
-    pause 2.0
-    hide text
-    "The new Freddy Fazbear's Pizza is all bright plastic and party streamers."
-    "In the back room, the old animatronics from the first location sit in a heap. Withered. Stripped for parts."
-    "And in the Prize Corner, a music box sits on top of a gift box, waiting to be wound."
-    "{b}Chapter 2 is still being built.{/b} The Toy and Withered animatronics, and the Puppet finale, are coming next."
-    return
-
-
 label chapter3_start:
     $ reset_chapter_state(3)
+    $ chapter_ease = 2 in persistent.good_endings
     scene black
     with dissolve
     show text "{size=90}{b}CHAPTER 3{/b}{/size}\n{size=40}Fazbear's Fright{/size}" at truecenter
     with dissolve
     pause 2.0
     hide text
-    "{b}Chapter 3 is still being built.{/b}"
+    "Thirty years later. Fazbear's Fright: The Horror Attraction."
+    "{b}Chapter 3 is still being built.{/b} The phantoms, and Springtrap, are coming next."
     return

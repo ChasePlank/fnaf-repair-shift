@@ -17,6 +17,16 @@ define ch = Character("Chica", color="#ffd23f")
 define fo = Character("Foxy", color="#ff5a3c")
 define gf = Character("Golden Freddy", color="#e2b84a", what_prefix="{b}", what_suffix="{/b}")
 define unk = Character("???", color="#b0b0b0")
+## Chapter 2
+define tf = Character("Toy Freddy", color="#d89a5a")
+define tb = Character("Toy Bonnie", color="#6fb6ff")
+define tc = Character("Toy Chica", color="#ffe14d")
+define mg = Character("Mangle", color="#ff8fc8", what_prefix="{i}", what_suffix="{/i}")
+define wf = Character("Withered Freddy", color="#a8794a")
+define wb = Character("Withered Bonnie", color="#8078c8")
+define wc = Character("Withered Chica", color="#d8b840")
+define wx = Character("Withered Foxy", color="#d8503a")
+define pp = Character("The Puppet", color="#e8e8e8", what_prefix="{b}", what_suffix="{/b}")
 
 ## ---------------------------------------------------------------- data
 init python:
@@ -26,6 +36,18 @@ init python:
         "chica":    {"name": "Chica",    "where": "Kitchen",     "bg": "kitchen"},
         "foxy":     {"name": "Foxy",     "where": "Pirate Cove", "bg": "cove"},
         "goldenfreddy": {"name": "Golden Freddy", "where": "Security Office", "bg": "office"},
+        # Chapter 2
+        "toyfreddy":      {"name": "Toy Freddy",      "where": "Show Stage",        "bg": "stage"},
+        "toybonnie":      {"name": "Toy Bonnie",      "where": "Show Stage",        "bg": "stage"},
+        "toychica":       {"name": "Toy Chica",       "where": "Party Room 3",      "bg": "partyroom"},
+        "mangle":         {"name": "Mangle",          "where": "Kid's Cove",        "bg": "kidscove"},
+        "witheredfreddy": {"name": "Withered Freddy", "where": "Parts & Service",   "bg": "parts"},
+        "witheredbonnie": {"name": "Withered Bonnie", "where": "Parts & Service",   "bg": "parts"},
+        "witheredchica":  {"name": "Withered Chica",  "where": "Parts & Service",   "bg": "parts"},
+        "witheredfoxy":   {"name": "Withered Foxy",   "where": "Parts & Service",   "bg": "parts"},
+        "puppet":         {"name": "The Puppet",      "where": "Prize Corner",      "bg": "prize",
+                           "death": "You let the music stop."},
+        "musicbox":       {"name": "Music Box",       "where": "Prize Corner",      "bg": "prize"},
     }
     ## The four selectable on Nights 1-4. Golden Freddy is always Night 5.
     REPAIR_ORDER = ["freddy", "bonnie", "chica", "foxy"]
@@ -34,7 +56,9 @@ init python:
 default guard_name = "Mike"
 default night = 0
 default repaired = []          # keys of fully repaired animatronics
-default trust = {"freddy": 0, "bonnie": 0, "chica": 0, "foxy": 0, "goldenfreddy": 0}
+default trust = {k: 0 for k in ("freddy", "bonnie", "chica", "foxy", "goldenfreddy",
+                                 "toyfreddy", "toybonnie", "toychica", "mangle",
+                                 "witheredfreddy", "witheredbonnie", "witheredchica", "witheredfoxy", "puppet")}
 default current_anim = None
 default total_checks = 0
 default perfect_checks = 0
@@ -46,6 +70,10 @@ default persistent.endings = set()
 ## Highest chapter the player has unlocked (1 = FNAF 1, 2 = FNAF 2, 3 = FNAF 3)
 default persistent.chapter_unlocked = 1
 default chapter = 1
+## Chapters whose GOOD ending the player has earned. A good ending makes the
+## NEXT chapter's skill checks easier (see chapter_ease in skillcheck.rpy).
+default persistent.good_endings = set()
+default chapter_ease = False
 
 ## Rollback would let players undo a failed skill check for free.
 ## Saves are the retry system, so rollback is turned off.
@@ -62,11 +90,17 @@ image bg cove     = "images/bg/cove.png"
 image bg kitchen  = "images/bg/kitchen.png"
 image bg parts    = "images/bg/parts.png"
 image bg menu     = "images/bg/menu.png"
+image bg kidscove = "images/bg/kidscove.png"
+image bg office2 = "images/bg/office2.png"
+image bg prize = "images/bg/prize.png"
+image bg partyroom = "images/bg/partyroom.png"
 image black = Solid("#000")
 image redflash = Solid("#b0001a")
 
 init python:
-    for _k in ("freddy", "bonnie", "chica", "foxy", "goldenfreddy"):
+    for _k in ("freddy", "bonnie", "chica", "foxy", "goldenfreddy",
+               "toyfreddy", "toybonnie", "toychica", "mangle",
+               "witheredfreddy", "witheredbonnie", "witheredchica", "witheredfoxy", "puppet", "musicbox"):
         for _s in ("broken", "arms", "legs", "fixed"):
             renpy.image((_k, _s), "images/chars/%s_%s.png" % (_k, _s))
 

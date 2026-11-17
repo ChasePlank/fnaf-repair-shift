@@ -36,6 +36,10 @@ init -10 python:
             super(SkillCheck, self).__init__(**kw)
             ease = 0.75 if persistent.assist_mode else 1.0
             zone_mult = 1.35 if persistent.assist_mode else 1.0
+            # Reward for the previous chapter's good ending
+            if getattr(store, "chapter_ease", False):
+                ease *= 0.88
+                zone += 8
             self.hits_needed = hits
             self.hits = 0
             self.greats = 0
@@ -78,8 +82,8 @@ init -10 python:
             prog = self._progress(st) if self.state == "run" else 0.0
             # developer-only auto player used by automated tests
             if self.state == "run" and config.developer and getattr(store, "_autohit", False):
-                if self.zone_start + 0.5 <= prog <= self.zone_start + self.width - 1:
-                    self._press(st)
+                if prog >= self.zone_start + 0.5:
+                    self._press(self.round_start + (self.zone_start + 1.0) / self.speed)
                     prog = self._frozen
             if self.state == "run" and prog > self.zone_start + self.width + 2:
                 self._finish("fail")
@@ -226,6 +230,9 @@ label skill_check(who_key, part, hits=1, speed=1.0, zone=55, reverse=False):
     play sound "audio/check_alert.wav"
     $ _sc = renpy.call_screen("skill_check", who=ANIM[who_key]["name"], part=part, hits=hits, speed=speed, zone=zone, reverse=reverse)
     $ config.allow_skipping = _skip_was
+    if config.developer and getattr(store, "_autohit", False):
+        $ open("/tmp/devlog.txt", "a").write("%s %s %s night=%s\n" % (who_key, part, _sc, night))
+        $ config.skipping = "fast"
     if _sc == "fail":
         $ renpy.pop_call()
         jump game_over

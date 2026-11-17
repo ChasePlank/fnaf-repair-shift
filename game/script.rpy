@@ -113,7 +113,8 @@ label six_am:
     pause 2.0
     hide text
     if len(repaired) < 4:
-        "[len(repaired)] of 4 repaired."
+        $ _done = len(repaired)
+        "[_done] of 4 repaired."
     return
 
 
@@ -172,6 +173,7 @@ label chapter1_end:
         fr "We remember now, [guard_name]. Who we were. What happened here."
         ch "And we don't have to be scared of it anymore."
         $ persistent.endings.add("ch1_good")
+        $ persistent.good_endings.add(1)
         $ _ending_name = "THE LAST SHOW"
     else:
         gf "You fixed us. Every bolt. Every wire."
@@ -181,6 +183,8 @@ label chapter1_end:
         $ persistent.endings.add("ch1_cold")
         $ _ending_name = "CLOSING TIME"
 
+    if 1 in persistent.good_endings:
+        "{i}(Good ending reward: skill checks in Chapter 2 will be a little easier.){/i}"
     if total_checks > 0 and perfect_checks == total_checks:
         gf "Not one slip. Steady hands. Steadier than ours ever were."
 
@@ -218,18 +222,19 @@ label game_over:
     scene black
     with Dissolve(0.6)
     $ deaths_seen.add(_who)
-    call screen game_over_screen(ANIM[_who]["name"])
+    call screen game_over_screen(ANIM[_who]["name"], ANIM[_who].get("death"))
     return
 
 
-screen game_over_screen(who):
+screen game_over_screen(who, death_line=None):
+    $ dl = death_line or ("%s wasn't ready to be fixed." % who)
     modal True
     add Solid("#000")
     vbox:
         align (0.5, 0.45)
         spacing 30
         text "YOU DIED" size 130 bold True color "#c8102e" xalign 0.5 outlines [(4, "#000", 0, 0)]
-        text "[who] wasn't ready to be fixed." size 36 color "#bbbbbb" xalign 0.5
+        text dl size 36 color "#bbbbbb" xalign 0.5
         null height 20
         textbutton "Load a Save" action ShowMenu("load") xalign 0.5 text_size 46
         textbutton "Main Menu" action MainMenu(confirm=False) xalign 0.5 text_size 46

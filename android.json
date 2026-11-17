@@ -1,0 +1,23 @@
+{
+    "expansion": false,
+    "google_play_key": null,
+    "google_play_salt": null,
+    "heap_size": null,
+    "icon_name": "Repair Shift",
+    "include_pil": false,
+    "include_sqlite": false,
+    "layout": null,
+    "name": "Five Nights: Repair Shift",
+    "numeric_version": 1,
+    "orientation": "sensorLandscape",
+    "package": "com.chaseplank.repairshift",
+    "permissions": [
+        "VIBRATE"
+    ],
+    "source": false,
+    "store": "none",
+    "update_always": true,
+    "update_icons": true,
+    "update_keystores": true,
+    "version": "1.0"
+}

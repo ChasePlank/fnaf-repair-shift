@@ -88,8 +88,16 @@ jobs:
           renpy-sdk/renpy.sh renpy-sdk/launcher android_build project --destination out/android
           ls -la out/android
 
-      ## Files are published as GitHub Releases (Actions artifact storage is
-      ## limited on this account; Release files don't count against it).
+      - uses: actions/upload-artifact@v5
+        with: { name: RepairShift-windows-linux, path: out/*-pc.zip }
+      - uses: actions/upload-artifact@v5
+        with: { name: RepairShift-mac, path: out/*-mac.zip }
+      - uses: actions/upload-artifact@v5
+        with: { name: RepairShift-android, path: out/android/*.apk }
+      - uses: actions/upload-artifact@v5
+        with: { name: RepairShift-web, path: out/RepairShift-web.zip }
+
+      ## Builds are also published as GitHub Releases for easy downloading. (Actions artifact storage is
       - name: Publish rolling "latest" build (pushes to main)
         if: github.ref == 'refs/heads/main'
         env:

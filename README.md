@@ -11,7 +11,7 @@ A FNAF fan visual novel built in [Ren'Py](https://www.renpy.org/) 8.3.7. You're 
 ## Playing
 | Platform | How |
 |---|---|
-| Windows | Download `RepairShift-*-pc.zip` from the **latest** Release, unzip, run `RepairShift.exe` |
+| Windows | Download `RepairShift-*-pc.zip` from the **latest** Release (or any Actions run), unzip, run `RepairShift.exe` |
 | macOS | Download `RepairShift-*-mac.zip`, unzip, right-click → Open the first time (it's unsigned) |
 | Android | Download the `.apk`, allow "install unknown apps", install |
 | iPhone / iPad | Play the web build in Safari, then Share → Add to Home Screen. Native iOS builds need a Mac with Xcode (see below) |

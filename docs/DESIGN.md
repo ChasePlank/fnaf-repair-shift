@@ -30,7 +30,7 @@ Every repair night has **3 skill checks**:
 - Ending: trust ≥ 10 → "The Last Show", otherwise "Closing Time". Both **unlock Chapter 2**.
 
 ### Chapter 2 — The New Location (FNAF 2) — PLANNED
-- Toy and Withered animatronics.
+- **Every Toy and every Withered animatronic gets its own repair night**, so Chapter 2 is longer than Chapter 1.
 - Repair mechanic continues.
 - Ends with **the Puppet**, who sends the player to Chapter 3.
 

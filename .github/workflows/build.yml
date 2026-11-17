@@ -97,7 +97,7 @@ jobs:
       - uses: actions/upload-artifact@v5
         with: { name: RepairShift-web, path: out/RepairShift-web.zip }
 
-      ## Builds are also published as GitHub Releases for easy downloading. (Actions artifact storage is
+      ## Builds are also published as GitHub Releases for easy downloading.
       - name: Publish rolling "latest" build (pushes to main)
         if: github.ref == 'refs/heads/main'
         env:

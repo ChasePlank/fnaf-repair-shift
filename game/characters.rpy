@@ -27,6 +27,12 @@ define wb = Character("Withered Bonnie", color="#8078c8")
 define wc = Character("Withered Chica", color="#d8b840")
 define wx = Character("Withered Foxy", color="#d8503a")
 define pp = Character("The Puppet", color="#e8e8e8", what_prefix="{b}", what_suffix="{/b}")
+## Chapter 3 — Fazbear's Fright. The phantoms are hallucinations; Springtrap is real.
+define pdude = Character("Phone Dude", color="#d9c27a", what_prefix="{i}", what_suffix="{/i}")
+define pf = Character("Phantom Freddy", color="#9aa58a", what_prefix="{i}", what_suffix="{/i}")
+define pc = Character("Phantom Chica", color="#b8b47a", what_prefix="{i}", what_suffix="{/i}")
+define px = Character("Phantom Foxy", color="#a8806a", what_prefix="{i}", what_suffix="{/i}")
+define spt = Character("Springtrap", color="#9fae55", what_prefix="{b}", what_suffix="{/b}")
 
 ## ---------------------------------------------------------------- data
 init python:
@@ -48,6 +54,11 @@ init python:
         "puppet":         {"name": "The Puppet",      "where": "Prize Corner",      "bg": "prize",
                            "death": "You let the music stop."},
         "musicbox":       {"name": "Music Box",       "where": "Prize Corner",      "bg": "prize"},
+        # Chapter 3
+        "phantomfreddy":  {"name": "Phantom Freddy",  "where": "The Office window",  "bg": "fright_office"},
+        "phantomchica":   {"name": "Phantom Chica",   "where": "The arcade screens", "bg": "fright_office"},
+        "phantomfoxy":    {"name": "Phantom Foxy",    "where": "The office doorway", "bg": "fright_office"},
+        "springtrap":     {"name": "Springtrap",      "where": "Everywhere",         "bg": "fright_hall"},
     }
     ## The four selectable on Nights 1-4. Golden Freddy is always Night 5.
     REPAIR_ORDER = ["freddy", "bonnie", "chica", "foxy"]
@@ -63,9 +74,17 @@ default current_anim = None
 default total_checks = 0
 default perfect_checks = 0
 default deaths_seen = set()
+## Chapter 3
+default calm = 0               # rises when you free phantoms quickly and kindly
+default freed = []             # phantoms set free
+default weakness_clues = []
+default st_hits = 0            # Springtrap fight: knee hits landed
+default st_fails = 0           # Springtrap fight: misses (3 = he has you)
+default fight_round = 0
 default _death_stage = "broken"
 
 default persistent.assist_mode = False
+default persistent.guard_name = None
 default persistent.endings = set()
 ## Highest chapter the player has unlocked (1 = FNAF 1, 2 = FNAF 2, 3 = FNAF 3)
 default persistent.chapter_unlocked = 1
@@ -94,6 +113,13 @@ image bg kidscove = "images/bg/kidscove.png"
 image bg office2 = "images/bg/office2.png"
 image bg prize = "images/bg/prize.png"
 image bg partyroom = "images/bg/partyroom.png"
+image bg fright_office = "images/bg/fright_office.png"
+image bg fright_hall = "images/bg/fright_hall.png"
+image bg fright_arcade = "images/bg/fright_arcade.png"
+image bg fright_storage = "images/bg/fright_storage.png"
+image bg fright_vent = "images/bg/fright_vent.png"
+image bg fright_attraction = "images/bg/fright_attraction.png"
+image bg bedroom = "images/bg/bedroom.png"
 image black = Solid("#000")
 image redflash = Solid("#b0001a")
 
@@ -103,6 +129,13 @@ init python:
                "witheredfreddy", "witheredbonnie", "witheredchica", "witheredfoxy", "puppet", "musicbox"):
         for _s in ("broken", "arms", "legs", "fixed"):
             renpy.image((_k, _s), "images/chars/%s_%s.png" % (_k, _s))
+    ## Chapter 3: phantoms have a "broken" (haunting) and "fixed" (freed) look.
+    ## Springtrap only has "broken" (and "hurt" for when he's hit).
+    for _k in ("phantomfreddy", "phantomchica", "phantomfoxy"):
+        for _s in ("broken", "fixed"):
+            renpy.image((_k, _s), "images/chars/%s_%s.png" % (_k, _s))
+    for _s in ("broken", "hurt"):
+        renpy.image(("springtrap", _s), "images/chars/springtrap_%s.png" % _s)
 
 ## ---------------------------------------------------------------- transforms
 transform sprite_pos(x=0.5):
@@ -140,6 +173,34 @@ transform flicker:
 transform repaired_glow:
     xalign 0.5 yalign 1.0 zoom 0.8 alpha 0.0
     easein 1.0 alpha 1.0
+
+## Phantoms flicker in and out. They aren't really there.
+transform phantom_flicker(x=0.5):
+    xalign x yalign 1.0 zoom 0.8 alpha 0.0
+    linear 0.08 alpha 0.85
+    linear 0.06 alpha 0.2
+    linear 0.1 alpha 0.8
+    block:
+        linear 1.4 alpha 0.6
+        linear 0.05 alpha 0.15
+        linear 0.05 alpha 0.75
+        linear 1.2 alpha 0.85
+        repeat
+
+transform ascend:
+    xalign 0.5 yalign 1.0 zoom 0.8 alpha 1.0
+    parallel:
+        easeout 3.0 yoffset -260
+    parallel:
+        pause 0.8
+        easeout 2.2 alpha 0.0
+
+transform hit_shake:
+    xalign 0.5 yalign 1.0 zoom 0.8
+    linear 0.04 xoffset 30
+    linear 0.04 xoffset -30
+    linear 0.04 xoffset 18
+    linear 0.04 xoffset 0
 
 define flash = Fade(0.08, 0.0, 0.25, color="#fff")
 define slowfade = Fade(1.0, 0.6, 1.0)

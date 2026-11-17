@@ -538,6 +538,117 @@ def bg_kidscove():
     finish(im, "kidscove")
 
 
+# ------------------------------------------------------------ Chapter 3 art
+
+def bg_fright(name, label, accent=(60, 70, 40), kind="room"):
+    im = gradient((16, 18, 12), (4, 5, 3))
+    d = ImageDraw.Draw(im)
+    if kind == "office":
+        d.rectangle([640, 180, 1280, 640], fill=(8, 10, 6))  # window
+        d.rectangle([640, 180, 1280, 640], outline=(50, 56, 36), width=10)
+        d.rectangle([1500, 200, 1800, 840], fill=(3, 3, 2))  # doorway
+        d.rectangle([200, 760, 1720, H], fill=(30, 30, 24))
+        for x0 in (300, 520):
+            d.rectangle([x0, 620, x0 + 180, 760], fill=(26, 26, 22))
+            d.rectangle([x0 + 14, 634, x0 + 166, 742], fill=(12, 26, 14))
+        d.ellipse([1280, 680, 1400, 760], fill=(40, 36, 20))  # fan
+    elif kind == "hall":
+        d.polygon([(0, 0), (760, 380), (760, 700), (0, H)], fill=(22, 24, 16))
+        d.polygon([(W, 0), (1160, 380), (1160, 700), (W, H)], fill=(22, 24, 16))
+        d.rectangle([760, 380, 1160, 700], fill=(2, 2, 2))
+        for i in range(6):
+            x = 120 + i * 110
+            d.rectangle([x, 300 + i * 20, x + 60, 360 + i * 20], fill=(60, 50, 40))
+    elif kind == "arcade":
+        d.rectangle([0, 820, W, H], fill=(20, 18, 14))
+        for i, x in enumerate(range(140, W - 100, 280)):
+            d.rectangle([x, 380, x + 180, 840], fill=(24, 22, 26))
+            d.rectangle([x + 20, 420, x + 160, 560], fill=(10, 40, 30) if i == 3 else (6, 6, 8))
+    elif kind == "storage":
+        d.rectangle([0, 840, W, H], fill=(24, 20, 14))
+        for i in range(14):
+            x, y = random.randint(40, W - 300), random.randint(500, 820)
+            d.rectangle([x, y, x + random.randint(160, 300), y + random.randint(80, 180)], fill=(70 + i * 3, 56, 34))
+        for x in (300, 1500):
+            d.ellipse([x - 60, 360, x + 60, 480], fill=(110, 90, 50))  # hanging masks
+            d.ellipse([x - 34, 396, x - 10, 420], fill=(10, 10, 10)); d.ellipse([x + 10, 396, x + 34, 420], fill=(10, 10, 10))
+    elif kind == "vent":
+        im = gradient((26, 26, 24), (8, 8, 8))
+        d = ImageDraw.Draw(im)
+        for k in range(8):
+            m = k * 60
+            d.rectangle([200 + m, 100 + m * 0.55, W - 200 - m, H - 100 - m * 0.55], outline=(46 - k * 3, 46 - k * 3, 42 - k * 3), width=8)
+        d.rectangle([800, 440, 1120, 640], fill=(2, 2, 2))
+    elif kind == "attraction":
+        d.rectangle([0, 820, W, H], fill=(22, 18, 14))
+        d.rectangle([560, 520, 1360, 640], fill=(70, 50, 30))  # plywood stage
+        for x in range(560, 1360, 40):
+            d.line([(x, 520), (x, 640)], fill=(56, 40, 24), width=3)
+        d.polygon([(400, 0), (560, 520), (360, 520)], fill=(60, 20, 30))
+        d.polygon([(1520, 0), (1360, 520), (1560, 520)], fill=(60, 20, 30))
+    elif kind == "bedroom":
+        im = gradient((14, 12, 24), (3, 3, 6))
+        d = ImageDraw.Draw(im)
+        d.rectangle([0, 820, W, H], fill=(26, 20, 26))
+        d.rectangle([140, 180, 520, 820], fill=(2, 2, 2))   # left door
+        d.rectangle([1400, 180, 1780, 820], fill=(2, 2, 2))  # right door
+        d.rectangle([820, 160, 1100, 820], fill=(6, 6, 10))  # closet
+        d.line([(960, 160), (960, 820)], fill=(30, 26, 36), width=6)
+        d.rectangle([600, 760, 1320, 900], fill=(50, 30, 60))  # bed
+        d.ellipse([1140, 640, 1220, 720], fill=(170, 130, 40))  # fredbear plush
+    d.text((960, 120), label, font=font(52, True), fill=accent, anchor="mm")
+    finish(im, name)
+
+
+def ch3_art():
+    bg_fright("fright_office", "", kind="office")
+    bg_fright("fright_hall", "", kind="hall")
+    bg_fright("fright_arcade", "ARCADE", (60, 90, 70), kind="arcade")
+    bg_fright("fright_storage", "PROP STORAGE", (90, 76, 50), kind="storage")
+    bg_fright("fright_vent", "", kind="vent")
+    bg_fright("fright_attraction", "FAZBEAR'S FRIGHT", (130, 40, 50), kind="attraction")
+    bg_fright("bedroom", "", kind="bedroom")
+    # phantoms: burnt, desaturated, glowing pinprick eyes. "fixed" = freed, bright.
+    for key, base in (("phantomfreddy", "freddy"), ("phantomchica", "chica"), ("phantomfoxy", "foxy")):
+        c = dict(CHARS[base]); c["eye"] = (255, 255, 255); c.pop("hook", None) if key == "phantomfoxy" else None
+        CHARS[key] = c
+        draw_char(key, 0)
+        im = Image.open(os.path.join(IMG, "chars", f"{key}_broken.png")).convert("RGBA")
+        r, g, b, a = im.split()
+        lum = Image.merge("RGB", (r, g, b)).convert("L")
+        burnt = Image.merge("RGB", (lum.point(lambda v: int(v * 0.55)), lum.point(lambda v: int(v * 0.62)), lum.point(lambda v: int(v * 0.42))))
+        burnt.putalpha(a.point(lambda v: int(v * 0.9)))
+        d = ImageDraw.Draw(burnt)
+        cx = CW // 2
+        for sgn in (-1, 1):
+            d.ellipse([cx + sgn * 75 - 9, 210 - 9, cx + sgn * 75 + 9, 210 + 9], fill=(255, 255, 255, 255))
+        burnt.save(os.path.join(IMG, "chars", f"{key}_broken.png"))
+        CHARS[key] = dict(CHARS[base])
+        draw_char(key, 3)
+        for st in ("arms", "legs"):
+            pth = os.path.join(IMG, "chars", f"{key}_{st}.png")
+            if os.path.exists(pth):
+                os.remove(pth)
+    # Springtrap: rotted green rabbit suit, exposed wiring, missing ear. Real, not a phantom.
+    CHARS["springtrap"] = dict(fur=(112, 124, 56), belly=(140, 140, 80), eye=(220, 220, 200), ears="long", withered=True)
+    draw_char("springtrap", 2)
+    src = os.path.join(IMG, "chars", "springtrap_legs.png")
+    im = Image.open(src).convert("RGBA")
+    d = ImageDraw.Draw(im)
+    cx = CW // 2
+    for (x0, y0) in [(cx - 60, 520), (cx + 80, 620), (cx - 140, 700), (cx + 20, 760)]:
+        d.line([(x0, y0), (x0 + 30, y0 + 50), (x0 + 10, y0 + 90)], fill=(150, 40, 30), width=6)
+    for s in (-1, 1):  # knee springlocks, the weak point
+        d.ellipse([cx + s * 110 - 26, 846, cx + s * 110 + 26, 898], fill=(150, 150, 150), outline=(60, 60, 60), width=6)
+    im.save(os.path.join(IMG, "chars", "springtrap_broken.png"))
+    hurt = im.copy()
+    red = Image.new("RGBA", im.size, (200, 20, 20, 0))
+    red.putalpha(im.split()[3].point(lambda v: int(v * 0.2)))
+    hurt.alpha_composite(red)
+    hurt.save(os.path.join(IMG, "chars", "springtrap_hurt.png"))
+    os.remove(src)
+
+
 # ---------------------------------------------------------------------- audio
 
 RATE = 22050
@@ -618,6 +729,7 @@ if __name__ == "__main__":
     for k in CHARS:
         for st in range(4):
             draw_char(k, st)
+    ch3_art()
     audio()
     musicbox_tune()
     print("placeholders written")

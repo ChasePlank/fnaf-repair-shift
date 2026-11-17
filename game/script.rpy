@@ -12,6 +12,7 @@ label start:
     "{i}This is a fan-made game. Save often — failing a repair is fatal.{/i}"
 
     $ guard_name = renpy.input("Night guard, what's your name?", default="Mike", length=16).strip() or "Mike"
+    $ persistent.guard_name = guard_name
 
     play music "audio/ambience.wav" fadein 2.0 volume 0.5
     scene bg exterior

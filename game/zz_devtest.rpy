@@ -27,3 +27,38 @@ label devtest_ch2:
         _preferences.skip_unseen = True
     jump chapter2_start
 
+
+## Automated full playthrough of Chapter 3 (first choice every time).
+label devtest_ch3:
+    pause 0.3
+    python:
+        _autohit = True
+        def _first(items, **kw):
+            v = [v for (t, v) in items if v is not None][0]
+            return getattr(v, "value", v)
+        store.menu = _first
+        renpy.display_menu = store.menu
+        renpy.input = lambda *a, **k: "Tester"
+        config.skipping = "fast"
+        _preferences.skip_unseen = True
+    jump chapter3_start
+
+## Chapter 3 scenes at reading speed (auto-forward), for screenshots.
+label devtest_ch3_scenes:
+    pause 0.3
+    python:
+        def _first(items, **kw):
+            v = [v for (t, v) in items if v is not None][-1]
+            return getattr(v, "value", v)
+        store.menu = _first
+        renpy.display_menu = store.menu
+        _preferences.afm_enable = True
+        _preferences.afm_time = 1
+        _preferences.text_cps = 0
+        calm = 0
+        freed = []
+        guard_name = "Tester"
+        st_hits = 2
+        st_fails = 3
+    call free_phantom("phantomfoxy")
+    jump ch3_end

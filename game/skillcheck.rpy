@@ -195,7 +195,7 @@ init -10 python:
             return []
 
 
-screen skill_check(who, part, hits=1, speed=1.0, zone=55, reverse=False):
+screen skill_check(who, part, hits=1, speed=1.0, zone=55, reverse=False, title=None):
     modal True
     zorder 200
     ## Block menus / skipping during a check so it can't be paused or cheesed.
@@ -210,7 +210,7 @@ screen skill_check(who, part, hits=1, speed=1.0, zone=55, reverse=False):
     vbox:
         align (0.5, 0.5)
         spacing 18
-        text "REPAIR: [who!u] — [part!u]":
+        text (title or ("REPAIR: %s — %s" % (who.upper(), part.upper()))):
             xalign 0.5 size 40 bold True color "#e8e8e8" outlines [(2, "#000", 0, 0)]
         if hits > 1:
             text "Hit the zone [hits] times in a row":

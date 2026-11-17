@@ -3,7 +3,8 @@
 ## Each FNAF game is its own chapter with the repair mechanic.
 ##   Chapter 1 — Freddy Fazbear's Pizza (FNAF 1). Night 5: Golden Freddy.
 ##   Chapter 2 — The new location (FNAF 2). Ends with the Puppet.
-##   Chapter 3 — Fazbear's Fright (FNAF 3). Most animatronics are hallucinations.
+##   Chapter 3 — Fazbear's Fright (FNAF 3). Phantoms, then Springtrap. Sends you to Ch4.
+##   Chapter 4 — The Nightmare (FNAF 4). Coming next.
 ## Finishing a chapter raises persistent.chapter_unlocked.
 ## =============================================================================
 
@@ -11,7 +12,8 @@ init python:
     CHAPTERS = [
         {"num": 1, "title": "Freddy Fazbear's Pizza", "sub": "The first location", "label": "start"},
         {"num": 2, "title": "The New Location", "sub": "Toys, Withereds, and the Puppet's music box", "label": "chapter2_start"},
-        {"num": 3, "title": "Fazbear's Fright", "sub": "Not everything here is real", "label": "chapter3_start"},
+        {"num": 3, "title": "Fazbear's Fright", "sub": "Free the phantoms, then face Springtrap", "label": "chapter3_start"},
+        {"num": 4, "title": "The Nightmare", "sub": "Survive until morning", "label": "chapter4_start"},
     ]
 
     def reset_chapter_state(num):
@@ -44,15 +46,18 @@ screen chapter_select():
                         text (c["sub"] if unlocked else "Locked — finish the previous chapter") size 26 color ("#c8102e" if unlocked else "#444")
 
 
-label chapter3_start:
-    $ reset_chapter_state(3)
-    $ chapter_ease = 2 in persistent.good_endings
+## Chapter 4 — the nightmare (FNAF 4). Springtrap sent you here; he's gone now.
+label chapter4_start:
+    $ reset_chapter_state(4)
+    $ chapter_ease = 3 in persistent.good_endings
     scene black
     with dissolve
-    show text "{size=90}{b}CHAPTER 3{/b}{/size}\n{size=40}Fazbear's Fright{/size}" at truecenter
+    show text "{size=90}{b}CHAPTER 4{/b}{/size}\n{size=40}The Nightmare{/size}" at truecenter
     with dissolve
     pause 2.0
     hide text
-    "Thirty years later. Fazbear's Fright: The Horror Attraction."
-    "{b}Chapter 3 is still being built.{/b} The phantoms, and Springtrap, are coming next."
+    scene bg bedroom
+    with slowfade
+    "A child's bedroom. A flashlight. Something breathing behind the door."
+    "{b}Chapter 4 is still being built.{/b} The nightmare is coming next."
     return

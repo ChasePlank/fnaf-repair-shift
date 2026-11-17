@@ -274,7 +274,9 @@ label chapter2_start:
     pause 2.0
     hide text
 
-    $ guard_name = renpy.input("Night guard, what's your name?", default="Jeremy", length=16).strip() or "Jeremy"
+    ## Same guard as Chapter 1, so default to the name they used before.
+    $ guard_name = renpy.input("Night guard, what's your name?", default=persistent.guard_name or "Mike", length=16).strip() or "Mike"
+    $ persistent.guard_name = guard_name
     if chapter_ease:
         "{i}(You earned the good ending in Chapter 1. Skill checks this chapter are a little easier.){/i}"
 

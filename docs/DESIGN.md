@@ -37,14 +37,22 @@ Every repair night has **3 skill checks**:
 - Ending: trust ≥ 16 gives "The Gift", otherwise "The Quiet". Both **unlock Chapter 3**. The Puppet sends the player 30 years ahead.
 
 ### Carry-over and memory
-- **Good endings make the next chapter easier**: a Chapter 1 good ending gives easier Chapter 2 checks, and a Chapter 2 good ending gives easier Chapter 3 checks (needle ×0.88 speed, wider zones).
+- **Good endings make the next chapter easier**: a Chapter 1 good ending gives easier Chapter 2 checks, and a Chapter 2 good ending gives easier Chapter 3 checks, and so on (needle ×0.88 speed, wider zones).
 - **Only the finale characters remember earlier chapters** (the Puppet and Springtrap). Everyone else meets the player fresh.
 
-### Chapter 3 — Fazbear's Fright (FNAF 3) — PLANNED
-- Most animatronics are **hallucinations (phantoms)**.
-- Each day the player investigates **what is trapping one phantom**, then frees it from what holds it. One phantom per day.
-- Last night: **the Springtrap fight**. During the night the player finds his weakness, then fights him.
-- **The fight is rigged.** It should feel very hard but winnable, never obviously scripted. The player loses no matter what, but **it is not a game over**. Instead a scene plays where Springtrap sends the player to Chapter 4.
+### Chapter 3 — Fazbear's Fright (FNAF 3) — BUILT
+- Thirty years later. The Puppet sends the player here, but **she is gone when they arrive**.
+- Phantoms: **Phantom Freddy** (missing his microphone), **Phantom Chica** (missing her cupcake) and **Phantom Foxy** (missing his hook). There's no Phantom Bonnie.
+- Nights 1–3: the player picks one phantom per night and searches Fazbear's Fright for its item (arcade, prop storage, vents, old attraction rooms). **No skill checks.** Each wrong spot gives a clue and a harmless phantom jumpscare, because phantoms are hallucinations. Finding the item makes the phantom **ascend**, and it's gone for the rest of the game.
+- Night 4: Springtrap confronts the player. He **remembers Chapters 1 and 2**. The player finds his weakness in three places (springlock manual, old Phone Guy tape, a pipe falling on his knee) and takes a crowbar. **A crowbar to the knees.**
+- Night 5: the fight. Springtrap chases the player into the office. Then the checks alternate between **SWING** (hit his knees, and he cries out in pain) and **DODGE**, and every round gets faster with smaller zones.
+  - It takes 3 knee hits to win and 3 misses to lose, but **the player is never told either number**.
+  - **The fight is rigged.** The third knee hit is far harder than anything before it, and if somebody lands it anyway, Springtrap catches the crowbar.
+  - Losing is **not a game over**. Springtrap sends the player into the Chapter 4 nightmare, and he is gone when they wake up there.
+- Ending: calm ≥ 6 (phantoms found quickly, kind choices) gives "Set Free", otherwise "Still Haunted". Both **unlock Chapter 4**. A good ending makes Chapter 4 easier.
+
+### Rule: chapter hand-offs
+The character who sends the player to the next chapter talks to them about it first. When the player arrives, that character is gone.
 
 ### Chapter 4 — The Nightmare (FNAF 4) — PLANNED
 - A nightmare the player must **survive**, played a lot like the original FNAF 4 (doors, closet, bed, flashlight, listening).

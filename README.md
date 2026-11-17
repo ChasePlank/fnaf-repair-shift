@@ -11,14 +11,14 @@ A FNAF fan visual novel built in [Ren'Py](https://www.renpy.org/) 8.3.7. You're 
 ## Playing
 | Platform | How |
 |---|---|
-| Windows | Download `RepairShift-*-pc.zip` from the latest Actions run or Release, unzip, run `RepairShift.exe` |
+| Windows | Download `RepairShift-*-pc.zip` from the **latest** Release, unzip, run `RepairShift.exe` |
 | macOS | Download `RepairShift-*-mac.zip`, unzip, right-click → Open the first time (it's unsigned) |
 | Android | Download the `.apk`, allow "install unknown apps", install |
 | iPhone / iPad | Play the web build in Safari, then Share → Add to Home Screen. Native iOS builds need a Mac with Xcode (see below) |
 | Any browser | Web build artifact (host the folder on any static host) |
 
 ## Building
-Every push to `main` runs `.github/workflows/build.yml`. It builds the Windows/Linux, macOS, web, and Android versions and uploads them as artifacts. Pushing a tag like `v1.0` also creates a GitHub Release with all files attached.
+Every push to `main` runs `.github/workflows/build.yml`. It builds the Windows/Linux, macOS, web, and Android versions and publishes them to a rolling `latest` GitHub Release. Pushing a tag like `v1.0` creates a permanent versioned Release.
 
 Android signing uses repo secrets `ANDROID_KEYSTORE_B64` and `BUNDLE_KEYSTORE_B64` (base64 of `android.keystore` / `bundle.keystore`). Keep the same keystores, or phones won't install updates over the old version.
 

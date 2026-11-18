@@ -222,13 +222,15 @@ screen skill_check(who, part, hits=1, speed=1.0, zone=55, reverse=False, title=N
 
 
 ## The label the story calls. Handles sound, result bookkeeping, and death.
-label skill_check(who_key, part, hits=1, speed=1.0, zone=55, reverse=False):
+label skill_check(who_key, part, hits=1, speed=1.0, zone=55, reverse=False, title=None):
     $ _skip_was = config.allow_skipping
     $ config.allow_skipping = False
     $ renpy.block_rollback()
-    $ _death_stage = {"ARMS": "broken", "LEGS": "arms"}.get(part, "legs")
+    $ _death_stage = {"ARMS": "broken", "LEGS": "arms", "FACE": "legs"}.get(part, "face" if renpy.has_image(who_key + " face") else "legs")
+    if not renpy.has_image(who_key + " " + _death_stage):
+        $ _death_stage = "broken"
     play sound "audio/check_alert.wav"
-    $ _sc = renpy.call_screen("skill_check", who=ANIM[who_key]["name"], part=part, hits=hits, speed=speed, zone=zone, reverse=reverse)
+    $ _sc = renpy.call_screen("skill_check", who=ANIM[who_key]["name"], part=part, hits=hits, speed=speed, zone=zone, reverse=reverse, title=title)
     $ config.allow_skipping = _skip_was
     if config.developer and getattr(store, "_autohit", False):
         $ open("/tmp/devlog.txt", "a").write("%s %s %s night=%s\n" % (who_key, part, _sc, night))

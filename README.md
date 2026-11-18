@@ -9,7 +9,8 @@ A FNAF fan visual novel built in [Ren'Py](https://www.renpy.org/) 8.3.7. You're 
 - **Chapter 2 (FNAF 2): playable.** All Toys and Withereds (pick a group first), with the Puppet's music box finale.
 - **Chapter 3 (FNAF 3): playable.** Free the three phantoms, find Springtrap's weakness, then survive (and lose) the fight.
 - **Chapter 4 (FNAF 4): playable.** Real-time nightmare survival, 5 nights × 5 minutes, with Retry Night on death.
-- Chapter 5: planned. See [docs/DESIGN.md](docs/DESIGN.md).
+- **Chapter 5 (Sister Location): playable.** Rebuild Baby, Funtime Freddy, Funtime Foxy and Ballora with timed choices and four checks each, then trap Ennard in the Scooping Room.
+- Chapter 6 (Pizzeria): planned. See [docs/DESIGN.md](docs/DESIGN.md).
 
 ## Playing
 | Platform | How |

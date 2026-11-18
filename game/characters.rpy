@@ -33,6 +33,14 @@ define pf = Character("Phantom Freddy", color="#9aa58a", what_prefix="{i}", what
 define pc = Character("Phantom Chica", color="#b8b47a", what_prefix="{i}", what_suffix="{/i}")
 define px = Character("Phantom Foxy", color="#a8806a", what_prefix="{i}", what_suffix="{/i}")
 define spt = Character("Springtrap", color="#9fae55", what_prefix="{b}", what_suffix="{/b}")
+## Chapter 5 — Sister Location. HandUnit is out of the loop. Only Ennard knows the past.
+define hu = Character("HandUnit", color="#7cc8ff", what_prefix="{i}", what_suffix="{/i}")
+define cb = Character("Circus Baby", color="#ff5a6a")
+define ff = Character("Funtime Freddy", color="#ff7ac8")
+define bnb = Character("Bon-Bon", color="#6fa8ff")
+define fx = Character("Funtime Foxy", color="#ff9ac0")
+define bl = Character("Ballora", color="#9aa8ff", what_prefix="{i}", what_suffix="{/i}")
+define en = Character("Ennard", color="#c8c8d0", what_prefix="{b}", what_suffix="{/b}")
 
 ## ---------------------------------------------------------------- data
 init python:
@@ -65,6 +73,12 @@ init python:
         "nightmarefoxy":   {"name": "Nightmare Foxy",   "where": "Closet",     "bg": "bedroom", "death": "Keep the closet shut. Never shine the light on him."},
         "nightmarefreddy": {"name": "Nightmare Freddy", "where": "Bed",        "bg": "bedroom", "death": "Don't let the Freddles pile up on the bed."},
         "fredbear":        {"name": "Fredbear",         "where": "Anywhere",   "bg": "bedroom", "death": "When he giggles, find him. Fast."},
+        # Chapter 5 (Sister Location): arms, legs, FACE, full repair
+        "circusbaby":    {"name": "Circus Baby",    "where": "Circus Gallery",     "bg": "sl_circus",     "death": "Her claw closed before you could pull your hand away."},
+        "funtimefreddy": {"name": "Funtime Freddy", "where": "Parts and Service",  "bg": "sl_parts",      "death": "Bon-Bon couldn't calm him down."},
+        "funtimefoxy":   {"name": "Funtime Foxy",   "where": "Funtime Auditorium", "bg": "sl_auditorium", "death": "He saw you. Move in the dark. Freeze in the light."},
+        "ballora":       {"name": "Ballora",        "where": "Ballora Gallery",    "bg": "sl_gallery",    "death": "She heard you. Only move when the music is loud."},
+        "ennard":        {"name": "Ennard",         "where": "Everywhere",         "bg": "sl_control",    "death": "He caught you. Lead him to the Scooping Room."},
     }
     ## The four selectable on Nights 1-4. Golden Freddy is always Night 5.
     REPAIR_ORDER = ["freddy", "bonnie", "chica", "foxy"]
@@ -88,6 +102,13 @@ default st_hits = 0            # Springtrap fight: knee hits landed
 default st_fails = 0           # Springtrap fight: misses (3 = he has you)
 default fight_round = 0
 default _death_stage = "broken"
+## Chapter 5
+default meter = 0              # ANGER / SEEN / NOISE / CLOSE. 3 = death
+default ch5_mistakes = 0       # wrong or late timed choices (decides the ending)
+default ch5_hints = 0          # times you asked Circus Baby
+default ch5_stage = "broken"
+default ch5_key = None
+default ch5_i = 0
 
 default persistent.assist_mode = False
 default persistent.guard_name = None
@@ -128,6 +149,14 @@ image bg fright_vent = "images/bg/fright_vent.png"
 image bg fright_attraction = "images/bg/fright_attraction.png"
 image bg bedroom = "images/bg/bedroom.png"
 image bg elevator = "images/bg/elevator.png"
+image bg sl_control = "images/bg/sl_control.png"
+image bg sl_vent = "images/bg/sl_vent.png"
+image bg sl_circus = "images/bg/sl_circus.png"
+image bg sl_parts = "images/bg/sl_parts.png"
+image bg sl_auditorium = "images/bg/sl_auditorium.png"
+image bg sl_gallery = "images/bg/sl_gallery.png"
+image bg sl_breaker = "images/bg/sl_breaker.png"
+image bg sl_scoop = "images/bg/sl_scoop.png"
 image black = Solid("#000")
 image redflash = Solid("#b0001a")
 
@@ -147,6 +176,11 @@ init python:
     ## Chapter 4 nightmares (one look each)
     for _k in ("nightmarebonnie", "nightmarechica", "nightmarefoxy", "nightmarefreddy", "fredbear"):
         renpy.image((_k, "broken"), "images/chars/%s_broken.png" % _k)
+    ## Chapter 5: scooped shells get a fifth stage, "face"
+    for _k in ("circusbaby", "funtimefreddy", "funtimefoxy", "ballora"):
+        for _s in ("broken", "arms", "legs", "face", "fixed"):
+            renpy.image((_k, _s), "images/chars/%s_%s.png" % (_k, _s))
+    renpy.image(("ennard", "broken"), "images/chars/ennard_broken.png")
 
 ## ---------------------------------------------------------------- transforms
 transform sprite_pos(x=0.5):

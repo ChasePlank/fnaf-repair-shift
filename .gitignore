@@ -14,3 +14,4 @@ dists/
 android.keystore
 bundle.keystore
 *.bak
+__pycache__/

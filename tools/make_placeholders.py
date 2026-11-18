@@ -744,6 +744,221 @@ def ch4_art():
         os.remove(src)
 
 
+# ------------------------------------------------------------ Chapter 5 art
+# Sister Location. The animatronics have been "scooped": empty shells. Stages:
+# 0 broken (scooped), 1 arms, 2 legs, 3 face, 4 fixed (powered on, glowing).
+
+SL = {
+    "circusbaby":    dict(body=(200, 40, 50), trim=(240, 240, 235), eye=(90, 220, 120), kind="baby"),
+    "funtimefreddy": dict(body=(235, 232, 228), trim=(220, 80, 160), eye=(60, 110, 255), kind="freddy"),
+    "funtimefoxy":   dict(body=(240, 236, 232), trim=(235, 90, 150), eye=(255, 210, 60), kind="foxy"),
+    "ballora":       dict(body=(70, 90, 190), trim=(180, 120, 210), eye=(130, 200, 255), kind="ballora"),
+}
+
+
+def draw_sl(key, stage):
+    c = SL[key]
+    dim = 1.0 if stage >= 4 else 0.72
+    body = tuple(int(v * dim) for v in c["body"])
+    trim = tuple(int(v * dim) for v in c["trim"])
+    im = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    cx = CW // 2
+    kind = c["kind"]
+    # legs
+    if stage >= 2:
+        for s in (-1, 1):
+            if kind == "ballora":
+                d.polygon([(cx + s * 40, 760), (cx + s * 100, 760), (cx + s * 60, 1040), (cx + s * 40, 1040)], fill=body)
+            else:
+                d.rounded_rectangle([cx + s * 105 - 55, 750, cx + s * 105 + 55, 990], 36, fill=body)
+                d.ellipse([cx + s * 105 - 80, 950, cx + s * 105 + 80, 1040], fill=trim)
+    else:
+        for s in (-1, 1):
+            endo_limb(d, [(cx + s * 90, 770), (cx + s * 110, 890), (cx + s * 95, 1010)], w=18)
+    # torso: an empty, open shell until the face stage closes it up
+    if kind == "ballora":
+        d.polygon([(cx - 150, 760), (cx + 150, 760), (cx + 270, 860), (cx - 270, 860)], fill=trim)  # tutu
+        d.rounded_rectangle([cx - 120, 420, cx + 120, 780], 70, fill=body)
+    else:
+        d.rounded_rectangle([cx - 180, 420, cx + 180, 790], 110, fill=body)
+        d.ellipse([cx - 120, 500, cx + 120, 760], fill=trim)
+    if kind == "baby":
+        d.rectangle([cx - 180, 420, cx + 180, 470], fill=trim)
+        for k in (-1, 0, 1):
+            d.ellipse([cx + k * 60 - 16, 560, cx + k * 60 + 16, 592], fill=(220, 60, 70))
+    if stage < 3:
+        d.rounded_rectangle([cx - 90, 520, cx + 90, 720], 30, fill=(10, 8, 10))  # hollow chest
+        d.line([(cx - 70, 560), (cx + 60, 690)], fill=(80, 80, 85), width=5)
+        d.text((cx, 740), "SCOOPED", font=font(26, True), fill=(160, 40, 40), anchor="mm")
+    # arms
+    if stage >= 1:
+        for s in (-1, 1):
+            d.rounded_rectangle([cx + s * 225 - 45, 450, cx + s * 225 + 45, 710], 40, fill=body)
+            d.ellipse([cx + s * 225 - 50, 680, cx + s * 225 + 50, 780], fill=trim)
+    else:
+        for s in (-1, 1):
+            endo_limb(d, [(cx + s * 180, 470), (cx + s * 240, 600), (cx + s * 230, 720)], w=18)
+    if kind == "freddy":
+        if True:
+            # Bon-Bon hand puppet on the right hand (never scooped)
+            bx, by = cx + 260, 650
+            d.rounded_rectangle([bx - 70, by - 20, bx + 70, by + 120], 40, fill=(70, 130, 230))
+            d.ellipse([bx - 80, by - 140, bx + 80, by + 20], fill=(70, 130, 230))
+            for s in (-1, 1):
+                d.rounded_rectangle([bx + s * 40 - 18, by - 260, bx + s * 40 + 18, by - 120], 18, fill=(70, 130, 230))
+            for s in (-1, 1):
+                d.ellipse([bx + s * 30 - 14, by - 90, bx + s * 30 + 14, by - 62], fill=(250, 250, 250))
+                d.ellipse([bx + s * 30 - 6, by - 82, bx + s * 30 + 6, by - 70], fill=(220, 40, 120))
+    # head
+    hx, hy = cx, 260
+    if kind == "baby":
+        for s in (-1, 1):
+            d.ellipse([hx + s * 170 - 70, hy - 170, hx + s * 170 + 50, hy - 50], fill=(220, 50, 40))  # pigtails
+    elif kind == "ballora":
+        d.ellipse([hx - 150, hy - 230, hx + 150, hy - 60], fill=(60, 50, 130))  # hair bun
+    elif kind == "freddy":
+        for s in (-1, 1):
+            d.ellipse([hx + s * 140 - 55, hy - 200, hx + s * 140 + 55, hy - 90], fill=body)
+            d.ellipse([hx + s * 140 - 28, hy - 172, hx + s * 140 + 28, hy - 116], fill=trim)
+        d.rectangle([hx - 60, hy - 250, hx + 60, hy - 150], fill=(200, 60, 140))
+        d.rectangle([hx - 90, hy - 160, hx + 90, hy - 140], fill=(200, 60, 140))
+    elif kind == "foxy":
+        for s in (-1, 1):
+            d.polygon([(hx + s * 70, hy - 120), (hx + s * 180, hy - 260), (hx + s * 180, hy - 90)], fill=body)
+            d.polygon([(hx + s * 100, hy - 130), (hx + s * 165, hy - 220), (hx + s * 165, hy - 110)], fill=trim)
+    d.ellipse([hx - 170, hy - 170, hx + 170, hy + 150], fill=body if kind != "baby" else (235, 225, 215))
+    if stage >= 3:
+        # faceplates closed
+        for s in (-1, 1):
+            ex = hx + s * 70
+            d.ellipse([ex - 46, hy - 80, ex + 46, hy + 12], fill=(245, 245, 245))
+            col = c["eye"] if stage >= 4 else (60, 60, 60)
+            d.ellipse([ex - 22, hy - 56, ex + 22, hy - 12], fill=col)
+            d.ellipse([ex - 9, hy - 43, ex + 9, hy - 25], fill=(10, 10, 10))
+        if kind in ("freddy", "foxy"):
+            d.ellipse([hx - 100, hy + 10, hx + 100, hy + 130], fill=trim)
+        for s in (-1, 1):
+            d.ellipse([hx + s * 120 - 24, hy + 40, hx + s * 120 + 24, hy + 80], fill=(240, 120, 150))
+        d.arc([hx - 70, hy + 40, hx + 70, hy + 120], 20, 160, fill=(150, 30, 60), width=10)
+    else:
+        # faceplates split open, nothing inside
+        for s in (-1, 1):
+            d.polygon([(hx + s * 10, hy - 150), (hx + s * 200, hy - 120), (hx + s * 210, hy + 120), (hx + s * 20, hy + 140)],
+                      fill=tuple(int(v * 0.85) for v in (body if kind != "baby" else (235, 225, 215))))
+        d.rectangle([hx - 12, hy - 150, hx + 12, hy + 140], fill=(8, 6, 8))
+        for s in (-1, 1):
+            d.ellipse([hx + s * 70 - 40, hy - 70, hx + s * 70 + 40, hy + 10], fill=(6, 6, 6))
+    if stage >= 4:
+        glow = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
+        ImageDraw.Draw(glow).ellipse([60, 60, CW - 60, CH - 60], fill=c["eye"] + (40,))
+        glow = glow.filter(ImageFilter.GaussianBlur(80))
+        base = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
+        base.alpha_composite(glow)
+        base.alpha_composite(im)
+        im = base
+    names = ["broken", "arms", "legs", "face", "fixed"]
+    im.save(os.path.join(IMG, "chars", f"{key}_{names[stage]}.png"))
+
+
+def draw_ennard():
+    im = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    cx = CW // 2
+    random.seed(55)
+    cols = [ENDO, ENDO_D, (120, 120, 128), (70, 70, 80)]
+    for _ in range(60):
+        pts = [(cx + random.randint(-260, 260), random.randint(340, 1050)) for _ in range(4)]
+        d.line(pts, fill=random.choice(cols), width=random.randint(6, 16), joint="curve")
+    for _ in range(12):  # loose bits of everyone
+        x, y = cx + random.randint(-240, 240), random.randint(380, 1000)
+        d.ellipse([x - 16, y - 16, x + 16, y + 16], fill=random.choice([(200, 40, 50), (70, 130, 230), (235, 90, 150), (70, 90, 190)]))
+    # the white clown mask
+    d.ellipse([cx - 150, 110, cx + 150, 420], fill=(232, 232, 228))
+    for s in (-1, 1):
+        d.ellipse([cx + s * 60 - 34, 210, cx + s * 60 + 34, 270], fill=(8, 8, 8))
+        d.ellipse([cx + s * 60 - 8, 232, cx + s * 60 + 8, 248], fill=(150, 255, 190))
+        d.polygon([(cx + s * 60, 160), (cx + s * 40, 196), (cx + s * 80, 196)], fill=(60, 80, 200))
+    d.arc([cx - 80, 280, cx + 80, 380], 10, 170, fill=(160, 20, 40), width=12)
+    d.ellipse([cx - 20, 280, cx + 20, 320], fill=(200, 30, 40))
+    im.save(os.path.join(IMG, "chars", "ennard_broken.png"))
+
+
+def bg_sl(name, label, base=(30, 32, 40), accent=(120, 40, 140), kind="room"):
+    im = gradient(tuple(min(255, v + 12) for v in base), tuple(v // 3 for v in base))
+    d = ImageDraw.Draw(im)
+    if kind == "control":
+        d.rectangle([0, 700, W, H], fill=(18, 18, 24))
+        d.rectangle([560, 160, 1360, 640], fill=(14, 18, 26), outline=(70, 70, 90), width=10)
+        d.text((960, 360), "HandUnit", font=font(80, True), fill=(120, 200, 255), anchor="mm")
+        d.text((960, 460), "SYSTEM ONLINE", font=font(40), fill=(90, 160, 200), anchor="mm")
+        for x in (200, 1720):
+            d.rectangle([x - 110, 260, x + 110, 640], fill=(10, 10, 14), outline=(60, 60, 70), width=8)  # windows
+    elif kind == "vent":
+        for k in range(8):
+            m = k * 60
+            d.rectangle([m, m // 2 + 100, W - m, H - m // 2 - 60], outline=(70, 72, 80), width=8)
+    elif kind == "scoop":
+        d.rectangle([0, 760, W, H], fill=(20, 20, 24))
+        d.rectangle([760, 0, 1160, 120], fill=(60, 60, 66))
+        d.rectangle([900, 120, 1020, 520], fill=(90, 90, 96))
+        d.polygon([(820, 520), (1100, 520), (1040, 640), (880, 640)], fill=(150, 150, 155))  # the scooper
+        d.rectangle([700, 700, 1220, 760], fill=(40, 40, 46))
+        d.rectangle([1500, 400, 1640, 520], fill=(160, 20, 30)); d.text((1570, 460), "SCOOP", font=font(28, True), fill=(255, 255, 255), anchor="mm")
+    elif kind == "auditorium":
+        d.rectangle([0, 700, W, H], fill=(14, 10, 14))
+        d.rectangle([300, 120, 1620, 700], fill=(40, 10, 30))
+        for x in range(320, 1620, 90):
+            d.rectangle([x, 120, x + 40, 700], fill=(70, 16, 50))  # curtain
+        for k in range(6):
+            d.ellipse([360 + k * 240, 40, 420 + k * 240, 100], fill=(240, 200, 120))  # lights
+    elif kind == "gallery":
+        d.rectangle([0, 760, W, H], fill=(16, 20, 40))
+        for k in range(5):
+            d.ellipse([200 + k * 340, 220, 330 + k * 340, 520], fill=(40, 50, 100))  # minireena alcoves
+            d.ellipse([235 + k * 340, 300, 295 + k * 340, 360], fill=(230, 230, 240))
+        d.text((960, 140), "BALLORA GALLERY", font=font(54, True), fill=(140, 160, 240), anchor="mm")
+    elif kind == "circus":
+        d.rectangle([0, 760, W, H], fill=(30, 12, 16))
+        for k in range(10):
+            d.polygon([(k * 200, 0), (k * 200 + 100, 0), (960, 440)], fill=(110, 20, 30) if k % 2 else (200, 190, 180))
+        d.ellipse([760, 400, 1160, 800], fill=(60, 20, 26))
+        d.text((960, 960), "CIRCUS GALLERY", font=font(54, True), fill=(240, 120, 140), anchor="mm")
+    elif kind == "parts":
+        d.rectangle([0, 760, W, H], fill=(22, 22, 26))
+        d.rectangle([660, 560, 1260, 640], fill=(70, 70, 76)); d.rectangle([700, 640, 740, 900], fill=(50, 50, 56)); d.rectangle([1180, 640, 1220, 900], fill=(50, 50, 56))
+        for x in (200, 1600):
+            d.rectangle([x, 200, x + 160, 760], fill=(40, 40, 46))
+            for y in range(240, 740, 100):
+                d.rectangle([x + 10, y, x + 150, y + 10], fill=(80, 80, 86))
+        d.text((960, 140), "PARTS AND SERVICE", font=font(54, True), fill=(200, 200, 210), anchor="mm")
+    elif kind == "breaker":
+        d.rectangle([0, 760, W, H], fill=(18, 18, 20))
+        d.rectangle([560, 220, 1360, 740], fill=(50, 52, 56), outline=(90, 90, 96), width=10)
+        for i in range(4):
+            for j in range(3):
+                d.rectangle([620 + i * 180, 280 + j * 150, 740 + i * 180, 380 + j * 150], fill=(30, 30, 32))
+                d.rectangle([660 + i * 180, 300 + j * 150, 700 + i * 180, 340 + j * 150], fill=(200, 60, 40) if (i + j) % 3 else (60, 200, 80))
+    if label:
+        d.text((960, 1010), label, font=font(30, True), fill=accent, anchor="mm")
+    finish(im, name)
+
+
+def ch5_art():
+    bg_sl("sl_control", "", (24, 30, 44), kind="control")
+    bg_sl("sl_vent", "", (26, 26, 30), kind="vent")
+    bg_sl("sl_circus", "", (40, 16, 20), kind="circus")
+    bg_sl("sl_parts", "", (30, 30, 36), kind="parts")
+    bg_sl("sl_auditorium", "FUNTIME AUDITORIUM", (30, 12, 26), (230, 120, 170), kind="auditorium")
+    bg_sl("sl_gallery", "", (16, 20, 46), kind="gallery")
+    bg_sl("sl_breaker", "BREAKER ROOM", (24, 24, 26), (200, 200, 200), kind="breaker")
+    bg_sl("sl_scoop", "SCOOPING ROOM", (26, 26, 30), (220, 60, 60), kind="scoop")
+    for k in SL:
+        for st in range(5):
+            draw_sl(k, st)
+    draw_ennard()
+
+
 # ---------------------------------------------------------------------- audio
 
 RATE = 22050
@@ -853,6 +1068,7 @@ if __name__ == "__main__":
             draw_char(k, st)
     ch3_art()
     ch4_art()
+    ch5_art()
     audio()
     ch4_audio()
     musicbox_tune()

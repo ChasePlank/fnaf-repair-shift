@@ -65,14 +65,23 @@ The character who sends the player to the next chapter talks to them about it fi
 - Assist Mode: captions for audio cues plus more reaction time. A good Chapter 3 ending also gives a little extra slack.
 - Ending: wake up in the Sister Location elevator. ≤3 total deaths = **WIDE AWAKE** (good, Chapter 5 is easier), otherwise **STILL DREAMING**. Unlocks Chapter 5 (currently a stub).
 
-### Chapter 5 — Sister Location (FNAF 5) — PLANNED
-- The player arrives **after Ennard has escaped** and the animatronics have been **scooped**.
-- The facility seems **isolated**.
-- Day 1: **Circus Baby**
-- Day 2: **Funtime Freddy**
-- Day 3: **Funtime Foxy**
-- Day 4: **Ballora**
-- Day 5: **Ennard returns**, and the player has to **destroy** him.
+### Chapter 5 — Sister Location (FNAF 5) — BUILT
+- The player arrives (silent elevator) **after Ennard has escaped** and the animatronics have been **scooped**: empty shells. The facility is isolated.
+- **HandUnit** greets you. He thinks you're the new technician getting things ready for "showtime", calls you "Eggs Benedict", and has no idea what happened, here or in earlier chapters.
+- Each repair has **four** skill checks: arms, legs, **face**, then the full repair (hardest).
+- Choices are **timed**. A wrong answer, or running out of time, makes it worse: it fills that animatronic's meter (max 3 = death) and makes the next skill checks faster.
+- **Circus Baby** can help, but you have to ask: once she's fixed, timed choices show "Ask Circus Baby for a hint". The clock keeps running. She knows what's needed in this chapter but nothing about earlier ones.
+- Day 1: **Circus Baby** (easiest; she talks you through her own repair, with no meter).
+- Day 2: **Funtime Freddy**, ANGER. He angers easily; use **Bon-Bon** to keep him calm.
+- Day 3: **Funtime Foxy**, SEEN. He sees; be stealthy (move in the dark, freeze in the light).
+- Day 4: **Ballora**, NOISE. She hears; be quiet (move under the music).
+- Day 5: **Ennard returns.** He knows everything from Chapters 1–4. A chase with timed choices (CLOSE meter) and dodge checks: power the Scooping Room at the Breaker Room, lead him through Ballora Gallery, bait him onto the platform, dive, hit the SCOOP button.
+- Death is a normal game over (load a save).
+- Endings: 4 or fewer mistakes = **SHOWTIME** (good, Chapter 6 easier), otherwise **SCOOPED OUT**.
+- Hand-off: Circus Baby tells you about a new pizzeria and sends you up the elevator. When you arrive, her voice is gone. Unlocks Chapter 6.
+
+### Chapter 6 — Freddy Fazbear's Pizzeria (FNAF 6) — PLANNED
+- Placeholder only.
 
 ## Fan-made characters
 The user plans to mix canon and fan-made animatronics. See the header of `game/characters.rpy` for how to add one.

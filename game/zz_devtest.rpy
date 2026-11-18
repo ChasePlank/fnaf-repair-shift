@@ -115,3 +115,61 @@ label devtest_ch4_retry:
             return _orig_cs(name, *a, **k)
         renpy.call_screen = _cs
     jump devtest_ch4_death
+
+## Chapter 5: bot plays the whole chapter (right answer every time).
+label devtest_ch5:
+    pause 0.3
+    python:
+        _autohit = True
+        def _first(items, **kw):
+            v = [v for (t, v) in items if v is not None][0]
+            return getattr(v, "value", v)
+        store.menu = _first
+        renpy.display_menu = store.menu
+        config.skipping = "fast"
+        _preferences.skip_unseen = True
+        _orig_cs5 = renpy.call_screen
+        def _cs5(name, *a, **k):
+            if name == "ch5_intro":
+                return None
+            return _orig_cs5(name, *a, **k)
+        renpy.call_screen = _cs5
+    jump chapter5_start
+
+## Chapter 5: bot picks the wrong answer every time on Funtime Freddy (ANGER fills -> death).
+label devtest_ch5_bad:
+    pause 0.3
+    python:
+        _badbot = True
+        _autohit = True
+        def _first(items, **kw):
+            v = [v for (t, v) in items if v is not None][0]
+            return getattr(v, "value", v)
+        store.menu = _first
+        renpy.display_menu = store.menu
+        config.skipping = "fast"
+        reset_chapter_state(5)
+        repaired = ["circusbaby"]
+        night = 1
+    jump ch5_day_hub
+
+## Chapter 5: timer runs out on a choice (nobody answers), Baby hint visible.
+label devtest_ch5_timer:
+    scene bg sl_parts
+    show funtimefreddy broken at twitch
+    $ repaired = ["circusbaby"]
+    $ ch5_key = "funtimefreddy"
+    $ meter = 1
+    show screen ch5_meter
+    $ renpy.call_screen("timed_choice", prompt=CH5["funtimefreddy"]["steps"][1][1], options=[o[0] for o in CH5["funtimefreddy"]["steps"][1][2]], seconds=30.0, hint=CH5["funtimefreddy"]["steps"][1][3], can_ask=True, auto_hint=True)
+    return
+
+label devtest_ch5_intro:
+    scene bg sl_control
+    call screen ch5_intro
+    return
+
+label devtest_chapters:
+    $ persistent.chapter_unlocked = 6
+    call screen chapter_select
+    return

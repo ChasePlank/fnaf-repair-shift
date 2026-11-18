@@ -649,6 +649,101 @@ def ch3_art():
     os.remove(src)
 
 
+# ------------------------------------------------------------ Chapter 4 art
+
+def ch4_art():
+    # hallway (left; the right door uses a mirrored copy)
+    im = gradient((14, 12, 20), (2, 2, 4))
+    d = ImageDraw.Draw(im)
+    d.polygon([(0, 0), (700, 300), (700, 760), (0, H)], fill=(20, 16, 26))
+    d.polygon([(W, 0), (1220, 300), (1220, 760), (W, H)], fill=(16, 12, 20))
+    d.rectangle([700, 300, 1220, 760], fill=(6, 5, 8))
+    d.polygon([(0, H), (700, 760), (1220, 760), (W, H)], fill=(24, 20, 22))
+    for i in range(5):
+        x = 80 + i * 120
+        d.rectangle([x, 200 + i * 22, x + 70, 300 + i * 22], fill=(60, 40, 50))  # picture frames
+    d.rectangle([0, 0, 120, H], fill=(40, 30, 30))  # door frame edge
+    finish(im, "n4_hall")
+    # door held shut
+    im = gradient((40, 28, 22), (18, 12, 10))
+    d = ImageDraw.Draw(im)
+    d.rectangle([380, 0, 1540, H], fill=(70, 48, 34))
+    for y0 in (80, 560):
+        d.rectangle([480, y0, 1440, y0 + 420], outline=(50, 34, 24), width=14)
+    d.ellipse([1360, 520, 1440, 600], fill=(170, 140, 60))
+    for s in (-1, 1):
+        d.ellipse([960 + s * 180 - 90, 820, 960 + s * 180 + 90, 1100], fill=(225, 190, 160))  # hands on the door
+    finish(im, "n4_door_closed", vignette=0.6)
+    # closet open
+    im = gradient((10, 8, 14), (2, 2, 3))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, 420, H], fill=(46, 32, 24)); d.rectangle([1500, 0, W, H], fill=(46, 32, 24))
+    d.rectangle([420, 0, 1500, H], fill=(4, 3, 5))
+    d.line([(440, 160), (1480, 160)], fill=(70, 70, 70), width=10)
+    for x in (520, 700, 1200, 1380):
+        d.polygon([(x, 160), (x - 60, 480), (x + 60, 480)], fill=(30, 26, 40))  # hanging clothes
+    finish(im, "n4_closet")
+    im = gradient((40, 28, 22), (18, 12, 10))
+    d = ImageDraw.Draw(im)
+    d.rectangle([300, 0, 958, H], fill=(70, 48, 34)); d.rectangle([962, 0, 1620, H], fill=(70, 48, 34))
+    for x in range(330, 1600, 60):
+        d.line([(x, 60), (x, H - 60)], fill=(54, 36, 26), width=8)
+    for s in (-1, 1):
+        d.ellipse([960 + s * 120 - 80, 820, 960 + s * 120 + 80, 1100], fill=(225, 190, 160))
+    finish(im, "n4_closet_closed", vignette=0.6)
+    # bed
+    im = gradient((14, 10, 22), (3, 2, 6))
+    d = ImageDraw.Draw(im)
+    d.rectangle([200, 560, 1720, 960], fill=(60, 36, 72))
+    d.rectangle([200, 520, 1720, 600], fill=(80, 50, 96))
+    d.ellipse([380, 460, 760, 600], fill=(200, 200, 210))  # pillow
+    d.rectangle([180, 300, 240, 1000], fill=(40, 26, 20)); d.rectangle([1680, 300, 1740, 1000], fill=(40, 26, 20))
+    finish(im, "n4_bed")
+    # elevator (Chapter 4 ending / Chapter 5)
+    im = gradient((40, 40, 46), (14, 14, 18))
+    d = ImageDraw.Draw(im)
+    d.rectangle([360, 80, 1560, 1000], fill=(70, 70, 78))
+    d.line([(960, 80), (960, 1000)], fill=(30, 30, 34), width=10)
+    d.rectangle([1620, 360, 1780, 720], fill=(50, 50, 56))
+    for k in range(4):
+        d.ellipse([1670, 390 + k * 80, 1730, 450 + k * 80], fill=(200, 180, 90) if k == 3 else (110, 110, 120))
+    d.rectangle([700, 140, 1220, 300], fill=(10, 20, 30))
+    d.text((960, 220), "CIRCUS BABY'S", font=font(44, True), fill=(220, 80, 120), anchor="mm")
+    finish(im, "elevator")
+    # nightmares: darker, ragged, rows of sharp teeth and claws
+    defs = {
+        "nightmarefreddy": ("freddy", None), "nightmarebonnie": ("bonnie", None),
+        "nightmarechica": ("chica", None), "nightmarefoxy": ("foxy", None),
+        "fredbear": (None, dict(fur=(190, 150, 50), belly=(220, 190, 110), eye=(200, 80, 220), ears="round", hat=True,
+                                tie=(120, 40, 160))),
+    }
+    for key, (base, cdef) in defs.items():
+        c = dict(CHARS[base]) if base else dict(cdef)
+        c["withered"] = True
+        c["eye"] = (255, 60, 60) if key != "fredbear" else c["eye"]
+        CHARS[key] = c
+        draw_char(key, 2)
+        src = os.path.join(IMG, "chars", f"{key}_legs.png")
+        im = Image.open(src).convert("RGBA")
+        r, g, b, a = im.split()
+        im = Image.merge("RGBA", (r.point(lambda v: int(v * 0.62)), g.point(lambda v: int(v * 0.55)), b.point(lambda v: int(v * 0.55)), a))
+        d = ImageDraw.Draw(im)
+        cx = CW // 2
+        # sharp teeth across the belly mouth
+        d.rounded_rectangle([cx - 120, 560, cx + 120, 720], 40, fill=(20, 4, 6))
+        for k in range(-5, 6):
+            x = cx + k * 21
+            d.polygon([(x - 10, 560), (x + 10, 560), (x, 610)], fill=(235, 225, 210))
+            d.polygon([(x - 10, 720), (x + 10, 720), (x, 672)], fill=(235, 225, 210))
+        # claws
+        for s in (-1, 1):
+            for k in range(3):
+                x = cx + s * 230 + (k - 1) * 30
+                d.polygon([(x - 8, 770), (x + 8, 770), (x + s * 6, 830)], fill=(230, 230, 230))
+        im.save(os.path.join(IMG, "chars", f"{key}_broken.png"))
+        os.remove(src)
+
+
 # ---------------------------------------------------------------------- audio
 
 RATE = 22050
@@ -708,6 +803,33 @@ def audio():
     write_wav("chime.wav", s)
 
 
+def ch4_audio():
+    # slow heavy breathing (loops)
+    n = int(RATE * 3.2)
+    s = []
+    lp = 0.0
+    for i in range(n):
+        t = i / RATE
+        env = max(0.0, math.sin(math.pi * (t % 1.6) / 1.6)) ** 2
+        lp += 0.08 * (random.uniform(-1, 1) - lp)
+        s.append(lp * env * 2.4)
+    write_wav("breathing.wav", s)
+    # footsteps: four low thuds
+    s = []
+    for k in range(4):
+        for i in range(int(RATE * 0.32)):
+            t = i / RATE
+            s.append((math.sin(2 * math.pi * 70 * t) + random.uniform(-0.3, 0.3)) * math.exp(-t * 22) * 0.9)
+    write_wav("footsteps.wav", s)
+    # giggle: a few quick wobbly notes
+    s = []
+    for f in (520, 610, 560, 660, 590):
+        for i in range(int(RATE * 0.11)):
+            t = i / RATE
+            s.append(math.sin(2 * math.pi * (f + 40 * math.sin(t * 60)) * t) * math.sin(math.pi * t / 0.11) * 0.5)
+    write_wav("giggle.wav", s)
+
+
 def musicbox_tune():
     # "My Grandfather's Clock"-ish public domain feel, simple plucked notes
     notes = [392, 523, 494, 523, 587, 523, 587, 659, 587, 523, 494, 440, 392, 0, 392, 523, 494, 523, 587, 523, 494, 440, 392]
@@ -730,6 +852,8 @@ if __name__ == "__main__":
         for st in range(4):
             draw_char(k, st)
     ch3_art()
+    ch4_art()
     audio()
+    ch4_audio()
     musicbox_tune()
     print("placeholders written")

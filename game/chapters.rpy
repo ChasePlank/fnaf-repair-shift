@@ -4,7 +4,8 @@
 ##   Chapter 1 — Freddy Fazbear's Pizza (FNAF 1). Night 5: Golden Freddy.
 ##   Chapter 2 — The new location (FNAF 2). Ends with the Puppet.
 ##   Chapter 3 — Fazbear's Fright (FNAF 3). Phantoms, then Springtrap. Sends you to Ch4.
-##   Chapter 4 — The Nightmare (FNAF 4). Coming next.
+##   Chapter 4 — The Nightmare (FNAF 4). Real time. Wake up in the elevator.
+##   Chapter 5 — Sister Location. Coming next.
 ## Finishing a chapter raises persistent.chapter_unlocked.
 ## =============================================================================
 
@@ -13,7 +14,8 @@ init python:
         {"num": 1, "title": "Freddy Fazbear's Pizza", "sub": "The first location", "label": "start"},
         {"num": 2, "title": "The New Location", "sub": "Toys, Withereds, and the Puppet's music box", "label": "chapter2_start"},
         {"num": 3, "title": "Fazbear's Fright", "sub": "Free the phantoms, then face Springtrap", "label": "chapter3_start"},
-        {"num": 4, "title": "The Nightmare", "sub": "Survive until morning", "label": "chapter4_start"},
+        {"num": 4, "title": "The Nightmare", "sub": "Five nights. Survive until 6 AM", "label": "chapter4_start"},
+        {"num": 5, "title": "Sister Location", "sub": "After Ennard", "label": "chapter5_start"},
     ]
 
     def reset_chapter_state(num):
@@ -46,18 +48,18 @@ screen chapter_select():
                         text (c["sub"] if unlocked else "Locked — finish the previous chapter") size 26 color ("#c8102e" if unlocked else "#444")
 
 
-## Chapter 4 — the nightmare (FNAF 4). Springtrap sent you here; he's gone now.
-label chapter4_start:
-    $ reset_chapter_state(4)
-    $ chapter_ease = 3 in persistent.good_endings
+## Chapter 5 — Sister Location. Coming next.
+label chapter5_start:
+    $ reset_chapter_state(5)
+    $ chapter_ease = 4 in persistent.good_endings
     scene black
     with dissolve
-    show text "{size=90}{b}CHAPTER 4{/b}{/size}\n{size=40}The Nightmare{/size}" at truecenter
+    show text "{size=90}{b}CHAPTER 5{/b}{/size}\n{size=40}Sister Location{/size}" at truecenter
     with dissolve
     pause 2.0
     hide text
-    scene bg bedroom
+    scene bg elevator
     with slowfade
-    "A child's bedroom. A flashlight. Something breathing behind the door."
-    "{b}Chapter 4 is still being built.{/b} The nightmare is coming next."
+    "The elevator doors open onto a dark, empty facility. Nobody here. Nobody at all."
+    "{b}Chapter 5 is still being built.{/b} Circus Baby is coming next."
     return

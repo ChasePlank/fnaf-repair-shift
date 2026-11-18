@@ -210,6 +210,7 @@ label chapter1_end:
 
 ## ------------------------------------------------------------------ death
 label game_over:
+    $ quick_menu = True
     $ config.allow_skipping = True
     window hide
     stop music

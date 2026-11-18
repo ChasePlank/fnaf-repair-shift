@@ -59,6 +59,12 @@ init python:
         "phantomchica":   {"name": "Phantom Chica",   "where": "The arcade screens", "bg": "fright_office"},
         "phantomfoxy":    {"name": "Phantom Foxy",    "where": "The office doorway", "bg": "fright_office"},
         "springtrap":     {"name": "Springtrap",      "where": "Everywhere",         "bg": "fright_hall"},
+        # Chapter 4 (real time, no dialogue)
+        "nightmarebonnie": {"name": "Nightmare Bonnie", "where": "Left door",  "bg": "bedroom", "death": "You shone the light on him. Or you didn't hold the door."},
+        "nightmarechica":  {"name": "Nightmare Chica",  "where": "Right door", "bg": "bedroom", "death": "If you hear breathing, hold the door. Don't look."},
+        "nightmarefoxy":   {"name": "Nightmare Foxy",   "where": "Closet",     "bg": "bedroom", "death": "Keep the closet shut. Never shine the light on him."},
+        "nightmarefreddy": {"name": "Nightmare Freddy", "where": "Bed",        "bg": "bedroom", "death": "Don't let the Freddles pile up on the bed."},
+        "fredbear":        {"name": "Fredbear",         "where": "Anywhere",   "bg": "bedroom", "death": "When he giggles, find him. Fast."},
     }
     ## The four selectable on Nights 1-4. Golden Freddy is always Night 5.
     REPAIR_ORDER = ["freddy", "bonnie", "chica", "foxy"]
@@ -85,6 +91,7 @@ default _death_stage = "broken"
 
 default persistent.assist_mode = False
 default persistent.guard_name = None
+default persistent.ch4_deaths = 0
 default persistent.endings = set()
 ## Highest chapter the player has unlocked (1 = FNAF 1, 2 = FNAF 2, 3 = FNAF 3)
 default persistent.chapter_unlocked = 1
@@ -120,6 +127,7 @@ image bg fright_storage = "images/bg/fright_storage.png"
 image bg fright_vent = "images/bg/fright_vent.png"
 image bg fright_attraction = "images/bg/fright_attraction.png"
 image bg bedroom = "images/bg/bedroom.png"
+image bg elevator = "images/bg/elevator.png"
 image black = Solid("#000")
 image redflash = Solid("#b0001a")
 
@@ -136,6 +144,9 @@ init python:
             renpy.image((_k, _s), "images/chars/%s_%s.png" % (_k, _s))
     for _s in ("broken", "hurt"):
         renpy.image(("springtrap", _s), "images/chars/springtrap_%s.png" % _s)
+    ## Chapter 4 nightmares (one look each)
+    for _k in ("nightmarebonnie", "nightmarechica", "nightmarefoxy", "nightmarefreddy", "fredbear"):
+        renpy.image((_k, "broken"), "images/chars/%s_broken.png" % _k)
 
 ## ---------------------------------------------------------------- transforms
 transform sprite_pos(x=0.5):

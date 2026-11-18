@@ -8,7 +8,8 @@ A FNAF fan visual novel built in [Ren'Py](https://www.renpy.org/) 8.3.7. You're 
 - **Chapter 1 (FNAF 1): playable.** Freddy, Bonnie, Chica, Foxy, and Golden Freddy on Night 5.
 - **Chapter 2 (FNAF 2): playable.** All Toys and Withereds (pick a group first), with the Puppet's music box finale.
 - **Chapter 3 (FNAF 3): playable.** Free the three phantoms, find Springtrap's weakness, then survive (and lose) the fight.
-- Chapters 4–5: planned. See [docs/DESIGN.md](docs/DESIGN.md).
+- **Chapter 4 (FNAF 4): playable.** Real-time nightmare survival, 5 nights × 5 minutes, with Retry Night on death.
+- Chapter 5: planned. See [docs/DESIGN.md](docs/DESIGN.md).
 
 ## Playing
 | Platform | How |

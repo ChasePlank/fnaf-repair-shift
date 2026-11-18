@@ -54,9 +54,16 @@ Every repair night has **3 skill checks**:
 ### Rule: chapter hand-offs
 The character who sends the player to the next chapter talks to them about it first. When the player arrives, that character is gone.
 
-### Chapter 4 — The Nightmare (FNAF 4) — PLANNED
-- A nightmare the player must **survive**, played a lot like the original FNAF 4 (doors, closet, bed, flashlight, listening).
-- Surviving it means the player **wakes up in the Sister Location elevator** → Chapter 5.
+### Chapter 4 — The Nightmare (FNAF 4) — BUILT
+- **Real-time survival**, played like the original FNAF 4. It's not a visual novel: no dialogue and no choices. The nightmares never talk; they're in your head and just want you dead.
+- **Intro tutorial** before Night 1 ("THIS CHAPTER IS DIFFERENT") explains that the nightmares are timed and that death can come at any moment, then walks through the controls.
+- **5 nights, 5 real minutes each** (12 AM–6 AM).
+- Views: room, left door, right door, closet, bed. Keys: A/D/W/S, F or Shift for the flashlight, Space to hold doors or the closet. On-screen buttons handle touch.
+- Rules: if you hear breathing at a door, hold it shut and don't use the light. Far down the hall, the light scares them off. Foxy moves through closet stages. Freddles pile up on the bed.
+- Roster: Nightmare Bonnie, Chica, Foxy, and Freddy, and **Nightmare Fredbear on Night 5**. Difficulty goes up each night.
+- **Death → Retry Night** (restarts that night from 12 AM), Load a Save, or Main Menu. You can't save during a night; saves happen between nights. If the game menu interrupts a night, the night restarts.
+- Assist Mode: captions for audio cues plus more reaction time. A good Chapter 3 ending also gives a little extra slack.
+- Ending: wake up in the Sister Location elevator. ≤3 total deaths = **WIDE AWAKE** (good, Chapter 5 is easier), otherwise **STILL DREAMING**. Unlocks Chapter 5 (currently a stub).
 
 ### Chapter 5 — Sister Location (FNAF 5) — PLANNED
 - The player arrives **after Ennard has escaped** and the animatronics have been **scooped**.

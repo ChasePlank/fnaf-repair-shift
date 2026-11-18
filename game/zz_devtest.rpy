@@ -62,3 +62,56 @@ label devtest_ch3_scenes:
         st_fails = 3
     call free_phantom("phantomfoxy")
     jump ch3_end
+
+## Chapter 4: a rule-following bot plays all 5 nights (shortened).
+label devtest_ch4:
+    pause 0.3
+    python:
+        _autohit = True
+        _night_len = 40.0
+        def _first(items, **kw):
+            v = [v for (t, v) in items if v is not None][0]
+            return getattr(v, "value", v)
+        store.menu = _first
+        renpy.display_menu = store.menu
+        config.skipping = "fast"
+        _preferences.skip_unseen = True
+        reset_chapter_state(4)
+        persistent.ch4_deaths = 0
+        night = getattr(store, "_start_night", 0)
+    jump ch4_night_hub
+
+label devtest_ch4_n5:
+    $ _start_night = 4
+    jump devtest_ch4
+
+## Chapter 4: nobody plays. Something should kill you.
+label devtest_ch4_death:
+    pause 0.3
+    python:
+        _night_len = 120.0
+        def _first(items, **kw):
+            v = [v for (t, v) in items if v is not None][0]
+            return getattr(v, "value", v)
+        store.menu = _first
+        renpy.display_menu = store.menu
+        reset_chapter_state(4)
+        night = 3
+    jump ch4_night_hub
+
+label devtest_ch4_intro:
+    scene bg bedroom
+    call screen nightmare_intro
+    call screen nightmare_controls
+    return
+
+label devtest_ch4_retry:
+    python:
+        _orig_cs = renpy.call_screen
+        def _cs(name, *a, **k):
+            if name == "ch4_death_screen":
+                renpy.pause(2.0)
+                return "retry"
+            return _orig_cs(name, *a, **k)
+        renpy.call_screen = _cs
+    jump devtest_ch4_death

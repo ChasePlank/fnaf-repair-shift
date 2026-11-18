@@ -47,7 +47,7 @@ init python:
     ##   ("scene", bg)
     CH5 = {}
 
-    CH5["circusbaby"] = dict(meter=None, timer=14.0, steps=[
+    CH5["circusbaby"] = dict(meter=None, timer=7.0, steps=[
         ("say", [("n", "The Circus Gallery. Striped canvas overhead, sagging. A popcorn cart on its side."),
                  ("n", "Circus Baby stands in the middle of the floor. Her arms lie beside her feet. Her faceplates hang open."),
                  ("n", "There's nothing inside her. No wires, no endoskeleton. Somebody scooped her out and left the shell standing."),
@@ -88,7 +88,7 @@ init python:
                  ("cb", "I'll be in the speakers. If you get stuck, ask me. I'll tell you what I know.")]),
     ])
 
-    CH5["funtimefreddy"] = dict(meter="ANGER", timer=10.0, steps=[
+    CH5["funtimefreddy"] = dict(meter="ANGER", timer=5.0, steps=[
         ("say", [("n", "Parts and Service. Funtime Freddy's shell is propped up on the workbench like a patient."),
                  ("n", "His chest is empty. But on his right hand, untouched, sits a little blue bunny puppet."),
                  ("ff", "Hey hey HEY! Who's THIS? A new friend?"),
@@ -127,7 +127,7 @@ init python:
                  ("ff", "...That's fine. HA HA. You're a good audience, pal.")]),
     ])
 
-    CH5["funtimefoxy"] = dict(meter="SEEN", timer=10.0, steps=[
+    CH5["funtimefoxy"] = dict(meter="SEEN", timer=5.0, steps=[
         ("say", [("n", "Funtime Auditorium. It's pitch black."),
                  ("n", "Every few seconds the stage lights flash on, then off. In the flashes I can see Funtime Foxy's shell on the stage."),
                  ("n", "His head turns toward the light every time. His motion sensors still work. Nothing else does."),
@@ -161,7 +161,7 @@ init python:
                  ("fx", "You're very good at this, technician. The stage is yours. For now.")]),
     ])
 
-    CH5["ballora"] = dict(meter="NOISE", timer=10.0, steps=[
+    CH5["ballora"] = dict(meter="NOISE", timer=5.0, steps=[
         ("say", [("n", "Ballora Gallery. Blue light, and music. Soft music box music, swelling and fading."),
                  ("n", "Ballora's shell stands at the far end, arms raised, her faceplates open. Her music is coming from her speaker."),
                  ("n", "Tiny Minireena shells sit in the alcoves along the walls. Every one of them is facing me."),
@@ -197,7 +197,7 @@ init python:
     ])
 
     ## Day 5. Ennard is the finale: he knows everything from the earlier chapters.
-    CH5["ennard"] = dict(meter="CLOSE", timer=8.0, steps=[
+    CH5["ennard"] = dict(meter="CLOSE", timer=4.0, steps=[
         ("choice", "Wires slide out of the vent above the control panel. Where do you go?",
             [("Into the crawlspace, toward the Breaker Room.", True, [("n", "I'm in the vent before the wires hit the floor.")]),
              ("Lock yourself in Primary Control.", False, [("n", "I slam the door. Wires come under it like water."), ("en", "Doors. You always did like your doors.")])],

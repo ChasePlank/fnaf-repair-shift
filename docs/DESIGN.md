@@ -69,7 +69,8 @@ The character who sends the player to the next chapter talks to them about it fi
 - The player arrives (silent elevator) **after Ennard has escaped** and the animatronics have been **scooped**: empty shells. The facility is isolated.
 - **HandUnit** greets you. He thinks you're the new technician getting things ready for "showtime", calls you "Eggs Benedict", and has no idea what happened, here or in earlier chapters.
 - Each repair has **four** skill checks: arms, legs, **face**, then the full repair (hardest).
-- Choices are **timed**. A wrong answer, or running out of time, makes it worse: it fills that animatronic's meter (max 3 = death) and makes the next skill checks faster.
+- Choices are **timed** and meant to feel rushed: 7 s on Baby's day, 5 s on Days 2–4, 4 s in the Ennard chase (Assist Mode +50%, good Ch4 ending +20%).
+- A wrong answer, or running out of time, makes it worse: it fills that animatronic's meter (max 3 = death) and makes the next skill checks faster.
 - **Circus Baby** can help, but you have to ask: once she's fixed, timed choices show "Ask Circus Baby for a hint". The clock keeps running. She knows what's needed in this chapter but nothing about earlier ones.
 - Day 1: **Circus Baby** (easiest; she talks you through her own repair, with no meter).
 - Day 2: **Funtime Freddy**, ANGER. He angers easily; use **Bon-Bon** to keep him calm.
@@ -81,7 +82,10 @@ The character who sends the player to the next chapter talks to them about it fi
 - Hand-off: Circus Baby tells you about a new pizzeria and sends you up the elevator. When you arrive, her voice is gone. Unlocks Chapter 6.
 
 ### Chapter 6 — Freddy Fazbear's Pizzeria (FNAF 6) — PLANNED
-- Placeholder only.
+- Pizzeria Simulator: run the pizzeria by day, survive at night (true-game style).
+- Salvage minigame first, for Scrap Baby, Molten Freddy, Lefty and the Springtrap variant (Scraptrap). **You can't abandon a salvage.** Failing isn't death: that animatronic becomes an enemy you have to survive at night. Passing means you don't have to deal with them.
+- Scraptrap is the main antagonist. He's technically Springtrap, which is why he didn't die in Chapter 3. The whole game builds toward finding and killing him.
+- **Final battle:** the characters who remember earlier chapters help you (Golden Freddy, the Puppet, Springtrap?, Ennard?). A chapter's good ending makes its helper stronger (e.g. good Ch1 ending = stronger Golden Freddy).
 
 ## Fan-made characters
 The user plans to mix canon and fan-made animatronics. See the header of `game/characters.rpy` for how to add one.
